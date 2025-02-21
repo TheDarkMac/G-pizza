@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2f0b965c-8852-434a-9b48-0f3fdef4dfc3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpizza.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/generated-sources/annotations/DishTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/datasource/Criteria.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/datasource/DAOSchema.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dish/Dish.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dish/DishDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ingredient/Ingredient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ingredient/IngredientDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/migration/db.draft" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/migration/db.migration" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/unit/Unit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/datasourceTest/DataSourceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/entityTest/DishTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/les_points_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/g-pizza.iml" beforeDir="false" afterPath="$PROJECT_DIR$/g-pizza.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migration/db.migration" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migration/db.testdata" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.testdata" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/datasource/DataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/datasource/DataSource.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2tLQGe583lKDqJsh2JsM6IubsSK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "JUnit.DishTest.executor": "Run",
+    "JUnit.DishTest.make.executor": "Run",
+    "JUnit.DishTest.test_result_with_data_on_database.executor": "Run",
+    "JUnit.DishTest.verify_if_the_production_price_is_true.executor": "Run",
+    "JUnit.DishTest.verify_with_the_data_provided.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/icecream/Documents/dev/prog3/g-pizza/gpizza",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="JUnit.DishTest.test_result_with_data_on_database">
+    <configuration name="DishTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gpizza" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="entityTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="entityTest" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DishTest.make" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gpizza" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="entityTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="entityTest" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
+      <option name="METHOD_NAME" value="make" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DishTest.test_result_with_data_on_database" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gpizza" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="entityTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="entityTest" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
+      <option name="METHOD_NAME" value="test_result_with_data_on_database" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DishTest.verify_if_the_production_price_is_true" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gpizza" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="entityTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="entityTest" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
+      <option name="METHOD_NAME" value="verify_if_the_production_price_is_true" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DishTest.verify_with_the_data_provided" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gpizza" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="entityTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="entityTest" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
+      <option name="METHOD_NAME" value="verify_with_the_data_provided" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.DishTest.test_result_with_data_on_database" />
+        <item itemvalue="JUnit.DishTest.verify_with_the_data_provided" />
+        <item itemvalue="JUnit.DishTest.verify_if_the_production_price_is_true" />
+        <item itemvalue="JUnit.DishTest" />
+        <item itemvalue="JUnit.DishTest.make" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2f0b965c-8852-434a-9b48-0f3fdef4dfc3" name="Changes" comment="" />
+      <created>1740128785841</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1740128785841</updated>
+      <workItem from="1740128785852" duration="13299000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -1,0 +1,38 @@
+\c postgres
+
+CREATE ROLE gpizza WITH ENCRYPTED PASSWORD 'gpizza' LOGIN CREATEDB;
+
+CREATE -h localhost -U gpizza gpizza
+
+CREATE TYPE unit AS ENUM('G','L','U');
+
+CREATE TABLE ingredient(
+    id_ingredient SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    unit unit NOT NULL
+);
+
+CREATE TABLE ingredient_price_history(
+    id_price SERIAL PRIMARY KEY,
+    id_ingredient INT NOT NULL,
+    date_price DATE NOT NULL DEFAULT CURRENT_DATE,
+    unit_price DECIMAL(10,2) NOT NULL,
+    CONSTRAINT fk_ingredient FOREIGN KEY (id_ingredient) REFERENCES ingredient(id_ingredient) ON DELETE CASCADE,
+    CONSTRAINT unique_price_date UNIQUE (id_ingredient, date_price)
+);
+
+CREATE TABLE dish(
+    id_dish SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE dish_ingredient(
+    id_dish INT,
+    id_ingredient INT,
+    quantity DECIMAL(10,2) NOT NULL,
+    unit unit NOT NULL,
+    PRIMARY KEY (id_dish, id_ingredient),
+    CONSTRAINT fk_ingredient_id FOREIGN KEY (id_ingredient) REFERENCES ingredient(id_ingredient) ON DELETE CASCADE,
+    CONSTRAINT fk_dish_id FOREIGN KEY (id_dish) REFERENCES dish(id_dish) ON DELETE CASCADE
+);
