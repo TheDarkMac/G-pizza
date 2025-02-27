@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import stock.Stock;
 import unit.Unit;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -17,9 +19,19 @@ import java.util.Objects;
 public class Ingredient {
     private int id;
     private String name;
-    private Timestamp lastModification;
+    private LocalDateTime lastModification;
     private double ingredientCost;
     private Unit unit;
+    private HashMap<Timestamp, Double> price_at;
+    private Stock stock;
+
+    public Ingredient(int id, String name, LocalDateTime lastModification, double ingredientCost, Unit unit) {
+        this.id = id;
+        this.name = name;
+        this.lastModification = lastModification;
+        this.ingredientCost = ingredientCost;
+        this.unit = unit;
+    }
 
     @Override
     public boolean equals(Object object) {
@@ -42,6 +54,7 @@ public class Ingredient {
                 ", lastModification=" + lastModification +
                 ", ingredientCost=" + ingredientCost +
                 ", unit=" + unit +
+                ", price at="+ price_at +
                 '}';
     }
 }

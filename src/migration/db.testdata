@@ -52,3 +52,6 @@ INNER JOIN ingredient_price_history ON ingredient_price_history.id_ingredient = 
         WHERE id_ingredient = ingredient.id_ingredient
     )
 WHERE dish.id_dish=1;
+
+
+INSERT INTO ingredient_price_history ()

@@ -27,7 +27,6 @@ public class Dish {
         this.ingredients = ingredients;
     }
 
-
     public double productionPrice(){
         return ingredients
                 .entrySet()

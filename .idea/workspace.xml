@@ -5,32 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2f0b965c-8852-434a-9b48-0f3fdef4dfc3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gpizza.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output/generated-sources/annotations/DishTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/datasource/Criteria.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/datasource/DAOSchema.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dish/Dish.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dish/DishDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ingredient/Ingredient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ingredient/IngredientDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/migration/db.draft" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/migration/db.migration" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/unit/Unit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/datasourceTest/DataSourceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/entityTest/DishTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/les_points_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/g-pizza.iml" beforeDir="false" afterPath="$PROJECT_DIR$/g-pizza.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migration/db.migration" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migration/db.testdata" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.testdata" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/criteria/Criteria.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/stock/Stock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/stock/StockDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/entityTest/IngredientTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/datasource/Criteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/datasource/DAOSchema.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/datasource/DAOSchema.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/datasource/DataSource.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/datasource/DataSource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/dish/Dish.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/dish/Dish.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/dish/DishDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/dish/DishDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/ingredient/Ingredient.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/ingredient/Ingredient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/ingredient/IngredientDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/ingredient/IngredientDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/migration/db.migration" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/migration/db.migration" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/migration/db.testdata" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/migration/db.testdata" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/test-classes/entityTest/DishTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/test-classes/entityTest/DishTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/datasource/Criteria.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/datasource/DAOSchema.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/datasource/DAOSchema.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/datasource/DataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/datasource/DataSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dish/Dish.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dish/Dish.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dish/DishDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dish/DishDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ingredient/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ingredient/Ingredient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ingredient/IngredientDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ingredient/IngredientDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/migration/db.migration" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.migration" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/migration/db.testdata" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.testdata" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/entityTest/DishTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/entityTest/DishTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,9 +47,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2tLQGe583lKDqJsh2JsM6IubsSK" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -58,11 +58,16 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
+    "JUnit.DataSourceTest.test_if_connection_is_ok_after_close.executor": "Run",
     "JUnit.DishTest.executor": "Run",
+    "JUnit.DishTest.finallIngredient.executor": "Run",
     "JUnit.DishTest.make.executor": "Run",
+    "JUnit.DishTest.nullable.executor": "Run",
+    "JUnit.DishTest.test_if_result_match_with_the_database.executor": "Run",
     "JUnit.DishTest.test_result_with_data_on_database.executor": "Run",
     "JUnit.DishTest.verify_if_the_production_price_is_true.executor": "Run",
     "JUnit.DishTest.verify_with_the_data_provided.executor": "Run",
+    "JUnit.IngredientTest.finallIngredient.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
@@ -76,7 +81,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.DishTest.test_result_with_data_on_database">
+  <component name="RunManager" selected="JUnit.IngredientTest.finallIngredient">
     <configuration name="DishTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gpizza" />
       <extension name="coverage">
@@ -92,7 +97,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DishTest.make" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DishTest.finallIngredient" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gpizza" />
       <extension name="coverage">
         <pattern>
@@ -102,7 +107,23 @@
       </extension>
       <option name="PACKAGE_NAME" value="entityTest" />
       <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
-      <option name="METHOD_NAME" value="make" />
+      <option name="METHOD_NAME" value="finallIngredient" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DishTest.test_if_result_match_with_the_database" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gpizza" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="entityTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="entityTest" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
+      <option name="METHOD_NAME" value="test_if_result_match_with_the_database" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -124,7 +145,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DishTest.verify_if_the_production_price_is_true" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="IngredientTest.finallIngredient" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gpizza" />
       <extension name="coverage">
         <pattern>
@@ -133,24 +154,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="entityTest" />
-      <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
-      <option name="METHOD_NAME" value="verify_if_the_production_price_is_true" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="DishTest.verify_with_the_data_provided" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="gpizza" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="entityTest.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="entityTest" />
-      <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
-      <option name="METHOD_NAME" value="verify_with_the_data_provided" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.IngredientTest" />
+      <option name="METHOD_NAME" value="finallIngredient" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -158,11 +163,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.DishTest.test_result_with_data_on_database" />
-        <item itemvalue="JUnit.DishTest.verify_with_the_data_provided" />
-        <item itemvalue="JUnit.DishTest.verify_if_the_production_price_is_true" />
+        <item itemvalue="JUnit.IngredientTest.finallIngredient" />
         <item itemvalue="JUnit.DishTest" />
-        <item itemvalue="JUnit.DishTest.make" />
+        <item itemvalue="JUnit.DishTest.finallIngredient" />
+        <item itemvalue="JUnit.DishTest.test_if_result_match_with_the_database" />
+        <item itemvalue="JUnit.DishTest.test_result_with_data_on_database" />
       </list>
     </recent_temporary>
   </component>
@@ -183,6 +188,14 @@
       <option name="presentableId" value="Default" />
       <updated>1740128785841</updated>
       <workItem from="1740128785852" duration="13299000" />
+      <workItem from="1740156220707" duration="3287000" />
+      <workItem from="1740208152004" duration="8457000" />
+      <workItem from="1740390621109" duration="2726000" />
+      <workItem from="1740394836060" duration="4039000" />
+      <workItem from="1740432348489" duration="783000" />
+      <workItem from="1740544792329" duration="6213000" />
+      <workItem from="1740551098434" duration="905000" />
+      <workItem from="1740568974811" duration="16693000" />
     </task>
     <servers />
   </component>

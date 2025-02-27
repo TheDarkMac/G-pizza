@@ -10,7 +10,6 @@ import java.sql.SQLException;
 public class DataSource {
     Dotenv dotenv = Dotenv.load();
     private Connection connection = null;
-
     private String system = dotenv.get("DB_SYSTEM");
     private String host = dotenv.get("DB_HOST");
     private int port = Integer.parseInt(dotenv.get("DB_PORT"));
