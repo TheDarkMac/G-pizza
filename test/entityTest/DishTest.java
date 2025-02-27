@@ -64,11 +64,17 @@ public class DishTest {
     void test_if_result_match_with_the_database(){
         Double expected = 5500.0;
         DishDAO dishDAO = new DishDAO();
-        Dish hotdog = dishDAO.findByName("hoT dog", Optional.ofNullable(LocalDateTime.of(2025,1,1,0,0,0)));
-        Dish hotdog2 = dishDAO.findByName("HOt d", Optional.ofNullable(null));
+        Map<String,Object> options = new HashMap<>();
+        options.put("date",Arrays.asList(
+                LocalDateTime.of(2024,12,31,0,0),
+                LocalDateTime.of(2025,1,1,0,0)
+        ));
+        Dish hotdog = dishDAO.findByName("hoT dog", options);
+        Dish hotdog2 = dishDAO.findByName("HOt d",new HashMap<>());
 
         Assertions.assertEquals(expected,hotdog.productionPrice());
         Assertions.assertEquals(expected,hotdog2.productionPrice());
+        Assertions.assertEquals(15000-5500,hotdog.getGrossMargin());
     }
 
 

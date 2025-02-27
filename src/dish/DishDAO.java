@@ -7,7 +7,6 @@ import ingredient.Ingredient;
 import unit.Unit;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -80,13 +79,14 @@ public class DishDAO implements DAOSchema{
     }
 
     @Override
-    public <T> T findByName(String name, Optional<LocalDateTime> date) {
+    public <T> T findByName(String name, Map<String, Object> criterias) {
         Dish dish = new Dish();
         Criteria criteria = new Criteria("dish_ingredient");
         criteria.select("ingredient.unit AS unit",
                         "dish.id_dish",
-                        "ingredient.id_ingredient",
                         "dish.name AS dish_name",
+                        "dish.unit_price AS selling_price",
+                        "ingredient.id_ingredient",
                         "ingredient.name AS ingredient_name",
                         "dish_ingredient.quantity AS quantity",
                         "ingredient_price_history.date_price AS date",
@@ -95,25 +95,23 @@ public class DishDAO implements DAOSchema{
                 .join("INNER", "ingredient", "dish_ingredient.id_ingredient = ingredient.id_ingredient")
                 .join("INNER", "ingredient_price_history", "ingredient_price_history.id_ingredient = ingredient.id_ingredient");
 
-        if (!date.isPresent()) {
+        if (!criterias.containsKey("date")) {
             Criteria sub = new Criteria("ingredient_price_history");
             sub.select("MAX(date_price)")
                     .and("ingredient_price_history.id_ingredient = ingredient.id_ingredient");
             criteria.and("dish.name ILIKE ?", "%"+name+"%");
         } else {
+            List< LocalDateTime > dateTimeList = (List<LocalDateTime>) criterias.get("date");
             criteria.and("dish.name ILIKE ?", "%"+name+"%")
-                    .and("ingredient_price_history.date_price = ?", date.get());
+                    .andBetween("ingredient_price_history.date_price", dateTimeList.get(0), dateTimeList.get(1));
         }
 
         String query = criteria.build();
-        System.out.println(query);
         try(Connection connection = ds.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-
             List<Object> params = criteria.getParameters();
             for (int i = 0; i < params.size(); i++) {
                 preparedStatement.setObject(i + 1, params.get(i));
-
             }
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -128,6 +126,7 @@ public class DishDAO implements DAOSchema{
                 ingredients.put(ingredient, resultSet.getDouble("quantity"));
                 dish.setId(resultSet.getInt("id_dish"));
                 dish.setName(resultSet.getString("dish_name"));
+                dish.setSelling_price(resultSet.getDouble("selling_price"));
             }
             dish.setIngredients(ingredients);
         }catch (SQLException | RuntimeException e){
@@ -135,4 +134,5 @@ public class DishDAO implements DAOSchema{
         }
         return (T) dish;
     }
+
 }

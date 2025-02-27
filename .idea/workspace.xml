@@ -5,32 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2f0b965c-8852-434a-9b48-0f3fdef4dfc3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/criteria/Criteria.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/stock/Stock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/stock/StockDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/entityTest/IngredientTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/datasource/Criteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/criteria/Criteria.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/criteria/Criteria.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/classes/datasource/DAOSchema.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/datasource/DAOSchema.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/datasource/DataSource.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/datasource/DataSource.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/classes/dish/Dish.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/dish/Dish.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/classes/dish/DishDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/dish/DishDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/ingredient/Ingredient.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/ingredient/Ingredient.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/classes/ingredient/IngredientDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/ingredient/IngredientDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/migration/db.migration" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/migration/db.migration" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/migration/db.testdata" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/migration/db.testdata" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/test-classes/entityTest/DishTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/test-classes/entityTest/DishTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/datasource/Criteria.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/test-classes/entityTest/IngredientTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/test-classes/entityTest/IngredientTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/criteria/Criteria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/criteria/Criteria.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/datasource/DAOSchema.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/datasource/DAOSchema.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/datasource/DataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/datasource/DataSource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dish/Dish.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dish/Dish.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dish/DishDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dish/DishDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ingredient/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ingredient/Ingredient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ingredient/IngredientDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ingredient/IngredientDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/migration/db.migration" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.migration" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/migration/db.testdata" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.testdata" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/entityTest/DishTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/entityTest/DishTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/entityTest/IngredientTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/entityTest/IngredientTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +57,7 @@
     "JUnit.DishTest.verify_if_the_production_price_is_true.executor": "Run",
     "JUnit.DishTest.verify_with_the_data_provided.executor": "Run",
     "JUnit.IngredientTest.finallIngredient.executor": "Run",
+    "JUnit.IngredientTest.search_for_all_unit_gram.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
@@ -81,7 +71,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.IngredientTest.finallIngredient">
+  <component name="RunManager" selected="JUnit.DishTest.test_if_result_match_with_the_database">
     <configuration name="DishTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gpizza" />
       <extension name="coverage">
@@ -129,22 +119,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DishTest.test_result_with_data_on_database" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="gpizza" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="entityTest.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="entityTest" />
-      <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
-      <option name="METHOD_NAME" value="test_result_with_data_on_database" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="IngredientTest.finallIngredient" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gpizza" />
       <extension name="coverage">
@@ -161,13 +135,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="IngredientTest.search_for_all_unit_gram" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gpizza" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="entityTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="entityTest" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.IngredientTest" />
+      <option name="METHOD_NAME" value="search_for_all_unit_gram" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.DishTest.test_if_result_match_with_the_database" />
+        <item itemvalue="JUnit.IngredientTest.search_for_all_unit_gram" />
         <item itemvalue="JUnit.IngredientTest.finallIngredient" />
         <item itemvalue="JUnit.DishTest" />
         <item itemvalue="JUnit.DishTest.finallIngredient" />
-        <item itemvalue="JUnit.DishTest.test_if_result_match_with_the_database" />
-        <item itemvalue="JUnit.DishTest.test_result_with_data_on_database" />
       </list>
     </recent_temporary>
   </component>
@@ -195,7 +185,7 @@
       <workItem from="1740432348489" duration="783000" />
       <workItem from="1740544792329" duration="6213000" />
       <workItem from="1740551098434" duration="905000" />
-      <workItem from="1740568974811" duration="16693000" />
+      <workItem from="1740568974811" duration="25218000" />
     </task>
     <servers />
   </component>

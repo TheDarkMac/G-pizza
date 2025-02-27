@@ -3,7 +3,6 @@ package ingredient;
 import criteria.Criteria;
 import datasource.DAOSchema;
 import datasource.DataSource;
-import org.jetbrains.annotations.Nullable;
 import unit.Unit;
 
 import java.sql.*;
@@ -11,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class IngredientDAO implements DAOSchema{
     private static DataSource ds = new DataSource();
@@ -37,7 +35,7 @@ public class IngredientDAO implements DAOSchema{
     }
 
     @Override
-    public <T> T findByName(String name, @Nullable Optional<LocalDateTime> date) {
+    public <T> T findByName(String name, Map<String, Object> criterias) {
         return null;
     }
 
@@ -55,11 +53,24 @@ public class IngredientDAO implements DAOSchema{
                 .offset( (page - 1) * limit)
         ;
         if (criterias.containsKey("ingredient_name")){
-            criteria.and("ingredient.name ILIKE ? ", criterias.get("ingredient_name"));
+            criteria.and("ingredient.name ILIKE ? ", criterias.get("ingredient_name")+"%");
+        }
+        if(criterias.containsKey("unit")){
+            criteria.and("unit::text = ? ", criterias.get("unit"));
+        }
+        if(criterias.containsKey("unit_price")){
+            List<Double> priceList = (List<Double>) criterias.get("unit_price");
+            criteria.andBetween("ingredient_price_history.unit_price", priceList.get(0), priceList.get(1));
+        }
+        if(criterias.containsKey("updatedAt")){
+            List<LocalDateTime> dateTimeList = (List<LocalDateTime>) criterias.get("updatedAt");
+            criteria.andBetween("ingredient_price_history.date_price ", dateTimeList.get(0),dateTimeList.get(1));
+        }
+        if(criterias.containsKey("orderBy_name")){
+            criteria.orderBy("name", (Boolean) criterias.get("orderBy_name"));
         }
 
         String query = criteria.build();
-        System.out.println(query);
         try(Connection connection = ds.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             List<Object> params = criteria.getParameters();

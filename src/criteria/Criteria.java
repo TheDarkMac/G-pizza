@@ -39,6 +39,13 @@ public class Criteria {
         return this;
     }
 
+    public Criteria andBetween(String field, Object value1, Object value2) {
+        conditions.add("AND " + field + " BETWEEN ? AND ?");
+        parameters.add(value1);
+        parameters.add(value2);
+        return this;
+    }
+
     public Criteria or(String condition, Object... values) {
         conditions.add("OR " + condition);
         for (Object value : values) {
@@ -97,4 +104,6 @@ public class Criteria {
     public List<Object> getParameters() {
         return parameters;
     }
+
+
 }

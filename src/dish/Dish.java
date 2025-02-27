@@ -57,4 +57,8 @@ public class Dish {
                 ", ingredients=" + ingredients +
                 '}';
     }
+
+    public Double getGrossMargin(){
+        return this.selling_price - this.productionPrice();
+    }
 }
