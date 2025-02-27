@@ -6,20 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2f0b965c-8852-434a-9b48-0f3fdef4dfc3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/criteria/Criteria.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/criteria/Criteria.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/datasource/DAOSchema.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/datasource/DAOSchema.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/dish/Dish.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/dish/Dish.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/dish/DishDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/dish/DishDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/ingredient/IngredientDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/ingredient/IngredientDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/test-classes/entityTest/DishTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/test-classes/entityTest/DishTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/test-classes/entityTest/IngredientTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/test-classes/entityTest/IngredientTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/criteria/Criteria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/criteria/Criteria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/datasource/DAOSchema.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/datasource/DAOSchema.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dish/Dish.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dish/Dish.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dish/DishDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dish/DishDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ingredient/IngredientDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ingredient/IngredientDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/entityTest/DishTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/entityTest/DishTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/entityTest/IngredientTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/entityTest/IngredientTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/migration/db.migration" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.migration" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/migration/db.testdata" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.testdata" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +59,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.DishTest.test_if_result_match_with_the_database">
+  <component name="RunManager" selected="JUnit.DishTest">
     <configuration name="DishTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gpizza" />
       <extension name="coverage">
@@ -153,10 +141,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.DishTest" />
         <item itemvalue="JUnit.DishTest.test_if_result_match_with_the_database" />
         <item itemvalue="JUnit.IngredientTest.search_for_all_unit_gram" />
         <item itemvalue="JUnit.IngredientTest.finallIngredient" />
-        <item itemvalue="JUnit.DishTest" />
         <item itemvalue="JUnit.DishTest.finallIngredient" />
       </list>
     </recent_temporary>
@@ -185,7 +173,7 @@
       <workItem from="1740432348489" duration="783000" />
       <workItem from="1740544792329" duration="6213000" />
       <workItem from="1740551098434" duration="905000" />
-      <workItem from="1740568974811" duration="25218000" />
+      <workItem from="1740568974811" duration="29756000" />
     </task>
     <servers />
   </component>

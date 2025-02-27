@@ -7,14 +7,14 @@ CREATE -h localhost -U gpizza gpizza
 CREATE TYPE unit AS ENUM('G','L','U');
 
 CREATE TABLE ingredient(
-    id_ingredient SERIAL PRIMARY KEY,
+    id_ingredient BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     unit unit NOT NULL
 );
 
 CREATE TABLE ingredient_price_history(
-    id_price SERIAL PRIMARY KEY,
-    id_ingredient INT NOT NULL,
+    id_price BIGSERIAL PRIMARY KEY,
+    id_ingredient BIGINT NOT NULL,
     date_price DATE NOT NULL DEFAULT CURRENT_DATE,
     unit_price DECIMAL(10,2) NOT NULL,
     CONSTRAINT fk_ingredient FOREIGN KEY (id_ingredient) REFERENCES ingredient(id_ingredient) ON DELETE CASCADE,
@@ -22,17 +22,36 @@ CREATE TABLE ingredient_price_history(
 );
 
 CREATE TABLE dish(
-    id_dish SERIAL PRIMARY KEY,
+    id_dish BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     unit_price DECIMAL(10,2) NOT NULL
 );
 
 CREATE TABLE dish_ingredient(
-    id_dish INT,
-    id_ingredient INT,
+    id_dish BIGINT,
+    id_ingredient BIGINT,
     quantity DECIMAL(10,2) NOT NULL,
     unit unit NOT NULL,
     PRIMARY KEY (id_dish, id_ingredient),
     CONSTRAINT fk_ingredient_id FOREIGN KEY (id_ingredient) REFERENCES ingredient(id_ingredient) ON DELETE CASCADE,
     CONSTRAINT fk_dish_id FOREIGN KEY (id_dish) REFERENCES dish(id_dish) ON DELETE CASCADE
 );
+
+CREATE TYPE movement_type AS ENUM('in','out');
+
+CREATE TABLE stock(
+    id_stock BIGSERIAL PRIMARY KEY,
+    id_ingredient BIGINT,
+    quantity DECIMAL(10,2),
+    date_of_movement TIMESTAMP,
+    movement_type movement_type,
+    CONSTRAINT pk_stock_id_ingredient FOREIGN KEY (id_ingredient) REFERENCES ingredient(id_ingredient) ON DELETE CASCADE
+);
+
+DROP TABLE dish_ingredient;
+DROP TABLE dish;
+DROP TABLE ingredient_price_history;
+DROP TABLE stock;
+DROP TABLE ingredient;
+DROP TYPE movement_type;
+DROP TYPE unit;
