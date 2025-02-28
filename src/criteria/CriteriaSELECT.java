@@ -3,7 +3,7 @@ package criteria;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Criteria {
+public class CriteriaSELECT {
     private String table;
     private List<String> fields = new ArrayList<>();
     private List<String> joins = new ArrayList<>();
@@ -13,12 +13,12 @@ public class Criteria {
     private Integer limit;
     private Integer offset;
 
-    public Criteria(String table) {
+    public CriteriaSELECT(String table) {
         this.table = table;
         this.conditions.add("1=1");
     }
 
-    public Criteria select(String... fields) {
+    public CriteriaSELECT select(String... fields) {
         this.fields.clear();
         for (String field : fields) {
             this.fields.add(field);
@@ -26,12 +26,12 @@ public class Criteria {
         return this;
     }
 
-    public Criteria join(String joinType, String table, String condition) {
+    public CriteriaSELECT join(String joinType, String table, String condition) {
         joins.add(joinType + " JOIN " + table + " ON " + condition);
         return this;
     }
 
-    public Criteria and(String condition, Object... values) {
+    public CriteriaSELECT and(String condition, Object... values) {
         conditions.add("AND " + condition);
         for (Object value : values) {
             parameters.add(value);
@@ -39,14 +39,14 @@ public class Criteria {
         return this;
     }
 
-    public Criteria andBetween(String field, Object value1, Object value2) {
+    public CriteriaSELECT andBetween(String field, Object value1, Object value2) {
         conditions.add("AND " + field + " BETWEEN ? AND ?");
         parameters.add(value1);
         parameters.add(value2);
         return this;
     }
 
-    public Criteria or(String condition, Object... values) {
+    public CriteriaSELECT or(String condition, Object... values) {
         conditions.add("OR " + condition);
         for (Object value : values) {
             parameters.add(value);
@@ -54,17 +54,17 @@ public class Criteria {
         return this;
     }
 
-    public Criteria orderBy(String column, boolean asc) {
+    public CriteriaSELECT orderBy(String column, boolean asc) {
         orderBy.add(column + (asc ? " ASC" : " DESC"));
         return this;
     }
 
-    public Criteria limit(int limit) {
+    public CriteriaSELECT limit(int limit) {
         this.limit = limit;
         return this;
     }
 
-    public Criteria offset(int offset) {
+    public CriteriaSELECT offset(int offset) {
         this.offset = offset;
         return this;
     }

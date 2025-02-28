@@ -8,7 +8,7 @@ CREATE TYPE unit AS ENUM('G','L','U');
 
 CREATE TABLE ingredient(
     id_ingredient BIGSERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL UNIQUE,
     unit unit NOT NULL
 );
 

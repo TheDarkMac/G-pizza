@@ -1,6 +1,6 @@
 package dish;
 
-import criteria.Criteria;
+import criteria.CriteriaSELECT;
 import datasource.DAOSchema;
 import datasource.DataSource;
 import ingredient.Ingredient;
@@ -81,8 +81,8 @@ public class DishDAO implements DAOSchema{
     @Override
     public <T> T findByName(String name, Map<String, Object> criterias) {
         Dish dish = new Dish();
-        Criteria criteria = new Criteria("dish_ingredient");
-        criteria.select("ingredient.unit AS unit",
+        CriteriaSELECT criteriaSELECT = new CriteriaSELECT("dish_ingredient");
+        criteriaSELECT.select("ingredient.unit AS unit",
                         "dish.id_dish",
                         "dish.name AS dish_name",
                         "dish.unit_price AS selling_price",
@@ -96,20 +96,20 @@ public class DishDAO implements DAOSchema{
                 .join("INNER", "ingredient_price_history", "ingredient_price_history.id_ingredient = ingredient.id_ingredient");
 
         if (!criterias.containsKey("date")) {
-            Criteria sub = new Criteria("ingredient_price_history");
+            CriteriaSELECT sub = new CriteriaSELECT("ingredient_price_history");
             sub.select("MAX(date_price)")
                     .and("ingredient_price_history.id_ingredient = ingredient.id_ingredient");
-            criteria.and("dish.name ILIKE ?", "%"+name+"%");
+            criteriaSELECT.and("dish.name ILIKE ?", "%"+name+"%");
         } else {
             List< LocalDateTime > dateTimeList = (List<LocalDateTime>) criterias.get("date");
-            criteria.and("dish.name ILIKE ?", "%"+name+"%")
+            criteriaSELECT.and("dish.name ILIKE ?", "%"+name+"%")
                     .andBetween("ingredient_price_history.date_price", dateTimeList.get(0), dateTimeList.get(1));
         }
 
-        String query = criteria.build();
+        String query = criteriaSELECT.build();
         try(Connection connection = ds.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            List<Object> params = criteria.getParameters();
+            List<Object> params = criteriaSELECT.getParameters();
             for (int i = 0; i < params.size(); i++) {
                 preparedStatement.setObject(i + 1, params.get(i));
             }

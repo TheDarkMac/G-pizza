@@ -19,36 +19,8 @@ VALUES (1, 1, 100, 'G'),
        (1, 3, 1, 'U'),
        (1, 4, 1, 'U');
 
-SELECT
-    ingredient.name AS name,
-    ingredient_price_history.unit_price AS unit_price
-FROM ingredient
-INNER JOIN ingredient_price_history ON ingredient_price_history.id_ingredient = ingredient.id_ingredient
-WHERE ingredient.name ILIKE '%U%'
-AND unit_price <= 1000
-ORDER BY name ASC, unit_price DESC;
-
-SELECT
-    ingredient.name AS name,
-    ingredient_price_history.unit_price AS unit_price FROM ingredient
-INNER JOIN ingredient_price_history ON ingredient_price_history.id_ingredient = ingredient.id_ingredient
-WHERE ingredient.name ILIKE '%U%'
-AND unit_price <= 1000
-ORDER BY name ASC, unit_price DESC
-LIMIT 1 OFFSET 0;
-
-SELECT
-    dish.name AS dish_name,
-    ingredient.name AS ingredient_name,
-    dish_ingredient.quantity AS quantity,
-    ingredient_price_history.unit_price AS unit_price
-FROM dish_ingredient
-INNER JOIN dish ON dish_ingredient.id_dish = dish.id_dish
-INNER JOIN ingredient ON dish_ingredient.id_ingredient = ingredient.id_ingredient
-INNER JOIN ingredient_price_history ON ingredient_price_history.id_ingredient = ingredient.id_ingredient
-    AND ingredient_price_history.date_price = (
-        SELECT MAX(date_price)
-        FROM ingredient_price_history
-        WHERE id_ingredient = ingredient.id_ingredient
-    )
-WHERE dish.id_dish=1;
+INSERT INTO stock(id_ingredient, quantity, date_of_movement, movement_type)
+VALUES(3,100,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in'),
+      (4,10,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in'),
+      (1,10000,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in'),
+      (2,20,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in');

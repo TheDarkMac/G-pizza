@@ -1,6 +1,7 @@
 package ingredient;
 
-import criteria.Criteria;
+import criteria.CriteriaINSERT;
+import criteria.CriteriaSELECT;
 import datasource.DAOSchema;
 import datasource.DataSource;
 import unit.Unit;
@@ -16,7 +17,24 @@ public class IngredientDAO implements DAOSchema{
 
     @Override
     public <T> boolean create(T object) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Ingredient ingredient = (Ingredient) object;
+        CriteriaINSERT criteriaINSERT = new CriteriaINSERT("ingredient");
+        criteriaINSERT.insert("name"," unit").values(ingredient.getName(),ingredient.getUnit());
+        String query = criteriaINSERT.build();
+        try (Connection connection = ds.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            List<Object> params = criteriaINSERT.getParameters();
+            for (int i = 0; i < params.size(); i++) {
+                preparedStatement.setObject(i + 1, params.get(i),Types.OTHER);
+            }
+            boolean resultSet = preparedStatement.execute();
+            if (resultSet) {
+                throw new RuntimeException("Could not insert ingredient");
+            }
+            return true;
+        }catch (SQLException | RuntimeException e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -39,41 +57,49 @@ public class IngredientDAO implements DAOSchema{
         return null;
     }
 
-    public static List<Ingredient> findAll(Map<String, Object> criterias, int limit, int page) {
+    public static List<Ingredient> findAll(Map<String, Object> criterias) {
         List<Ingredient> ingredients = new ArrayList<>();
-        Criteria criteria = new Criteria("ingredient");
-        criteria.select(
+        CriteriaSELECT criteriaSELECT = new CriteriaSELECT("ingredient");
+        criteriaSELECT.select(
                 "ingredient.id_ingredient AS id_ingredient",
                 "ingredient.name AS ingredient_name",
                 "ingredient.unit AS unit",
                 "ingredient_price_history.date_price AS updatedAt",
                 "ingredient_price_history.unit_price AS unit_price")
                 .join("INNER","ingredient_price_history","ingredient_price_history.id_ingredient = ingredient.id_ingredient")
-                .limit(limit)
-                .offset( (page - 1) * limit)
+
         ;
         if (criterias.containsKey("ingredient_name")){
-            criteria.and("ingredient.name ILIKE ? ", criterias.get("ingredient_name")+"%");
+            criteriaSELECT.and("ingredient.name ILIKE ? ", criterias.get("ingredient_name")+"%");
         }
         if(criterias.containsKey("unit")){
-            criteria.and("unit::text = ? ", criterias.get("unit"));
+            criteriaSELECT.and("unit::text = ? ", criterias.get("unit"));
         }
         if(criterias.containsKey("unit_price")){
             List<Double> priceList = (List<Double>) criterias.get("unit_price");
-            criteria.andBetween("ingredient_price_history.unit_price", priceList.get(0), priceList.get(1));
+            criteriaSELECT.andBetween("ingredient_price_history.unit_price", priceList.get(0), priceList.get(1));
         }
         if(criterias.containsKey("updatedAt")){
             List<LocalDateTime> dateTimeList = (List<LocalDateTime>) criterias.get("updatedAt");
-            criteria.andBetween("ingredient_price_history.date_price ", dateTimeList.get(0),dateTimeList.get(1));
+            criteriaSELECT.andBetween("ingredient_price_history.date_price ", dateTimeList.get(0),dateTimeList.get(1));
         }
         if(criterias.containsKey("orderBy_name")){
-            criteria.orderBy("name", (Boolean) criterias.get("orderBy_name"));
+            criteriaSELECT.orderBy("name", (Boolean) criterias.get("orderBy_name"));
+        }
+        if (criterias.containsKey("limite")){
+            criteriaSELECT.limit((Integer) criterias.get("limit"));
+        }
+        if (criterias.containsKey("page")){
+            int page = (Integer) criterias.get("page");
+            int limit = (Integer) criterias.get("limit");
+            page = ( page - 1 ) * limit;
+            criteriaSELECT.offset( page );
         }
 
-        String query = criteria.build();
+        String query = criteriaSELECT.build();
         try(Connection connection = ds.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            List<Object> params = criteria.getParameters();
+            List<Object> params = criteriaSELECT.getParameters();
             for (int i = 0; i < params.size(); i++) {
                 preparedStatement.setObject(i + 1, params.get(i));
             }
