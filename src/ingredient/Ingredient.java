@@ -33,6 +33,12 @@ public class Ingredient {
         this.unit = unit;
     }
 
+    public Ingredient(String name, double ingredientCost, Unit unit) {
+        this.name = name;
+        this.ingredientCost = ingredientCost;
+        this.unit = unit;
+    }
+
     public Ingredient(int id, String name, LocalDateTime lastModification, double ingredientCost, Unit unit) {
         this.id = id;
         this.name = name;

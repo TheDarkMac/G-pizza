@@ -5,29 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2f0b965c-8852-434a-9b48-0f3fdef4dfc3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/criteria/BaseCriteria.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/criteria/CriteriaDELETE.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/criteria/CriteriaINSERT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/unit/MovementType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/entityTest/StockTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/criteria/Criteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/datasource/DAOSchema.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/datasource/DAOSchema.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/classes/dish/DishDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/dish/DishDAO.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/classes/ingredient/Ingredient.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/ingredient/Ingredient.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/classes/ingredient/IngredientDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/ingredient/IngredientDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/migration/db.testdata" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/migration/db.testdata" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/classes/stock/Stock.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/stock/Stock.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/classes/migration/db.migration" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/migration/db.migration" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/classes/stock/StockDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/classes/stock/StockDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/test-classes/entityTest/DishTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/test-classes/entityTest/DishTest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/test-classes/entityTest/IngredientTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/test-classes/entityTest/IngredientTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/criteria/Criteria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/criteria/CriteriaSELECT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/test-classes/entityTest/StockTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/test-classes/entityTest/StockTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/datasource/DAOSchema.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/datasource/DAOSchema.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dish/DishDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dish/DishDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ingredient/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ingredient/Ingredient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ingredient/IngredientDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ingredient/IngredientDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/migration/db.testdata" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.testdata" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stock/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/stock/Stock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/migration/db.draft" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.draft" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/migration/db.migration" beforeDir="false" afterPath="$PROJECT_DIR$/src/migration/db.migration" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/stock/StockDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/stock/StockDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/entityTest/DishTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/entityTest/DishTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/entityTest/IngredientTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/entityTest/IngredientTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/entityTest/StockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/entityTest/StockTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,12 +62,20 @@
     "JUnit.DishTest.test_result_with_data_on_database.executor": "Run",
     "JUnit.DishTest.verify_if_the_production_price_is_true.executor": "Run",
     "JUnit.DishTest.verify_with_the_data_provided.executor": "Run",
+    "JUnit.IngredientTest.executor": "Run",
+    "JUnit.IngredientTest.feind_by_name.executor": "Run",
     "JUnit.IngredientTest.finallIngredient.executor": "Run",
+    "JUnit.IngredientTest.first_insertion.executor": "Run",
     "JUnit.IngredientTest.insertion.executor": "Run",
+    "JUnit.IngredientTest.reinsert_insertion.executor": "Run",
+    "JUnit.IngredientTest.reinsertion.executor": "Run",
     "JUnit.IngredientTest.search_for_all_unit_gram.executor": "Run",
+    "JUnit.IngredientTest.search_for_egg.executor": "Run",
     "JUnit.IngredientTest.test_available_quantity_of_ingredient_without_call_stockDAO.executor": "Run",
     "JUnit.IngredientTest.verify_available_quantity_of_ingredient.executor": "Run",
-    "JUnit.StockTest.testStock.executor": "Run",
+    "JUnit.StockTest.executor": "Run",
+    "JUnit.StockTest.insert_stock.executor": "Run",
+    "JUnit.StockTest.testStock.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
@@ -89,8 +94,8 @@
     ]
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.IngredientTest.insertion">
-    <configuration name="DishTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.StockTest.insert_stock">
+    <configuration name="IngredientTest.first_insertion" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gpizza" />
       <extension name="coverage">
         <pattern>
@@ -99,13 +104,45 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="entityTest" />
-      <option name="MAIN_CLASS_NAME" value="entityTest.DishTest" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.IngredientTest" />
+      <option name="METHOD_NAME" value="first_insertion" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="IngredientTest.reinsertion" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gpizza" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="entityTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="entityTest" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.IngredientTest" />
+      <option name="METHOD_NAME" value="reinsertion" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StockTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gpizza" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="entityTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="entityTest" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.StockTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IngredientTest.insertion" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StockTest.insert_stock" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gpizza" />
       <extension name="coverage">
         <pattern>
@@ -114,40 +151,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="entityTest" />
-      <option name="MAIN_CLASS_NAME" value="entityTest.IngredientTest" />
-      <option name="METHOD_NAME" value="insertion" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="IngredientTest.test_available_quantity_of_ingredient_without_call_stockDAO" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="gpizza" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="entityTest.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="entityTest" />
-      <option name="MAIN_CLASS_NAME" value="entityTest.IngredientTest" />
-      <option name="METHOD_NAME" value="test_available_quantity_of_ingredient_without_call_stockDAO" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="IngredientTest.verify_available_quantity_of_ingredient" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="gpizza" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="entityTest.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="entityTest" />
-      <option name="MAIN_CLASS_NAME" value="entityTest.IngredientTest" />
-      <option name="METHOD_NAME" value="verify_available_quantity_of_ingredient" />
+      <option name="MAIN_CLASS_NAME" value="entityTest.StockTest" />
+      <option name="METHOD_NAME" value="insert_stock" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -171,11 +176,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.IngredientTest.insertion" />
-        <item itemvalue="JUnit.IngredientTest.test_available_quantity_of_ingredient_without_call_stockDAO" />
-        <item itemvalue="JUnit.IngredientTest.verify_available_quantity_of_ingredient" />
+        <item itemvalue="JUnit.StockTest.insert_stock" />
         <item itemvalue="JUnit.StockTest.testStock" />
-        <item itemvalue="JUnit.DishTest" />
+        <item itemvalue="JUnit.StockTest" />
+        <item itemvalue="JUnit.IngredientTest.reinsertion" />
+        <item itemvalue="JUnit.IngredientTest.first_insertion" />
       </list>
     </recent_temporary>
   </component>
@@ -203,7 +208,7 @@
       <workItem from="1740432348489" duration="783000" />
       <workItem from="1740544792329" duration="6213000" />
       <workItem from="1740551098434" duration="905000" />
-      <workItem from="1740568974811" duration="45484000" />
+      <workItem from="1740568974811" duration="64118000" />
     </task>
     <servers />
   </component>

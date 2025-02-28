@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import stock.Stock;
 import stock.StockDAO;
 import unit.Unit;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -72,10 +71,43 @@ public class IngredientTest {
     }
 
     @Test
-    void insertion(){
+    void first_insertion(){
         IngredientDAO ingredientDAO = new IngredientDAO();
-        Ingredient riz = new Ingredient("riz", Unit.G);
+        Ingredient riz = new Ingredient();
+        riz.setIngredientCost(3.5);
+        riz.setName("riz");
+        riz.setUnit(Unit.G);
         boolean r = ingredientDAO.create(riz);
+        Ingredient sel = new Ingredient("sel",2.5,Unit.G);
+        boolean s = ingredientDAO.create(sel);
         Assertions.assertTrue(r);
+        Assertions.assertTrue(s);
+    }
+
+    @Test
+    void feind_by_name(){
+        IngredientDAO ingredientDAO = new IngredientDAO();
+        Map<String, Object> criteria = new HashMap<>();
+        criteria.put("ingredient_name", "ri");
+//        criteria.put("fields",Arrays.asList("ingredient.name AS ingredient_name",
+//                "unit",
+//                "ingredient.id_ingredient"));
+
+        Ingredient riz = ingredientDAO.findByName(criteria);
+        Assertions.assertNotNull(riz);
+        System.out.println(riz);
+        Assertions.assertEquals("riz",riz.getName());
+    }
+
+    @Test
+    void reinsertion(){
+        IngredientDAO ingredientDAO = new IngredientDAO();
+        Ingredient riz = new Ingredient();
+        riz.setIngredientCost(3.5);
+        riz.setName("riz");
+        riz.setUnit(Unit.G);
+        Assertions.assertThrows(RuntimeException.class,()->ingredientDAO.create(riz));
+        Ingredient sel = new Ingredient("sel",2.5,Unit.G);
+        Assertions.assertThrows(RuntimeException.class,()->ingredientDAO.create(sel));
     }
 }

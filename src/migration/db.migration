@@ -4,6 +4,15 @@ CREATE ROLE gpizza WITH ENCRYPTED PASSWORD 'gpizza' LOGIN CREATEDB;
 
 CREATE -h localhost -U gpizza gpizza
 
+
+DROP TABLE dish_ingredient;
+DROP TABLE dish;
+DROP TABLE ingredient_price_history;
+DROP TABLE stock;
+DROP TABLE ingredient;
+DROP TYPE movement_type;
+DROP TYPE unit;
+
 CREATE TYPE unit AS ENUM('G','L','U');
 
 CREATE TABLE ingredient(

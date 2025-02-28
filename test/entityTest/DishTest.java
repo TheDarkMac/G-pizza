@@ -3,15 +3,11 @@ package entityTest;
 import dish.Dish;
 import dish.DishDAO;
 import ingredient.Ingredient;
-import ingredient.IngredientDAO;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import unit.Unit;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -69,8 +65,8 @@ public class DishTest {
                 LocalDateTime.of(2024,12,31,0,0),
                 LocalDateTime.of(2025,1,1,0,0)
         ));
-        Dish hotdog = dishDAO.findByName("hoT dog", options);
-        Dish hotdog2 = dishDAO.findByName("HOt d",new HashMap<>());
+        Dish hotdog = dishDAO.findByName(options);
+        Dish hotdog2 = dishDAO.findByName(new HashMap<>());
 
         Assertions.assertEquals(expected,hotdog.productionPrice());
         Assertions.assertEquals(expected,hotdog2.productionPrice());

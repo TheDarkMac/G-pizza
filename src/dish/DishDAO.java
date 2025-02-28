@@ -79,7 +79,7 @@ public class DishDAO implements DAOSchema{
     }
 
     @Override
-    public <T> T findByName(String name, Map<String, Object> criterias) {
+    public <T> T findByName(Map<String, Object> criterias) {
         Dish dish = new Dish();
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("dish_ingredient");
         criteriaSELECT.select("ingredient.unit AS unit",
@@ -99,10 +99,10 @@ public class DishDAO implements DAOSchema{
             CriteriaSELECT sub = new CriteriaSELECT("ingredient_price_history");
             sub.select("MAX(date_price)")
                     .and("ingredient_price_history.id_ingredient = ingredient.id_ingredient");
-            criteriaSELECT.and("dish.name ILIKE ?", "%"+name+"%");
+            criteriaSELECT.and("dish.name ILIKE ?", "%"+criterias.get("ingredient_name")+"%");
         } else {
             List< LocalDateTime > dateTimeList = (List<LocalDateTime>) criterias.get("date");
-            criteriaSELECT.and("dish.name ILIKE ?", "%"+name+"%")
+            criteriaSELECT.and("dish.name ILIKE ?", "%"+criterias.get("ingredient_name")+"%")
                     .andBetween("ingredient_price_history.date_price", dateTimeList.get(0), dateTimeList.get(1));
         }
 
@@ -133,6 +133,11 @@ public class DishDAO implements DAOSchema{
             throw new RuntimeException(e);
         }
         return (T) dish;
+    }
+
+    @Override
+    public <T> T findById(Map<String, Object> criterias) {
+        return null;
     }
 
 }
