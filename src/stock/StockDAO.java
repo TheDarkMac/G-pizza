@@ -17,25 +17,30 @@ public class StockDAO {
 
     public boolean addStock(Stock stock,Map<String,Object> criteria) {
         CriteriaINSERT criteriaINSERT = new CriteriaINSERT("stock");
-        criteriaINSERT.insert("id_ingredient","quantity","movement_type");
-        criteriaINSERT.values(stock.getIngredients().getId(),stock.getQuantity(),stock.getMovement_type());
-        String query = criteriaINSERT.build();
+        if (criteria.containsKey("date_of_movement")){
+            criteriaINSERT.insert("id_ingredient","quantity","movement_type","date_of_movement");
+            criteriaINSERT.values(stock.getIngredients().getId(),stock.getQuantity(),stock.getMovement_type(),stock.getLastMovement() == null ? criteria.get("date_of_movement") : stock.getLastMovement());
+        }else {
+            criteriaINSERT.insert("id_ingredient","quantity","movement_type");
+            criteriaINSERT.values(stock.getIngredients().getId(),stock.getQuantity(),stock.getMovement_type());
 
+        }
+
+        String query = criteriaINSERT.build();
         try (Connection connection = ds.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             List<Object> params = criteriaINSERT.getParameters();
             for (int i = 0; i < params.size(); i++) {
                 preparedStatement.setObject(i+1,params.get(i),Types.OTHER);
             }
-            ResultSet result = preparedStatement.executeQuery();
-            if (!result.isFirst()){
+            boolean result = preparedStatement.execute();
+            if (!result){
                 return true;
             }
         }catch (SQLException | RuntimeException e){
             throw new RuntimeException(e);
         }
-
-        throw new RuntimeException("not implemented yet");
+        return true;
     }
 
     public List<Stock> getStockOf(Map<String,Object> criterias) {

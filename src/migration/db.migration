@@ -2,8 +2,11 @@
 
 CREATE ROLE gpizza WITH ENCRYPTED PASSWORD 'gpizza' LOGIN CREATEDB;
 
-CREATE -h localhost -U gpizza gpizza
+-- ceci n'est qu un racourci mais pour plus de verbalite, on cree et on reattribut le proprietaire
+-- CREATE -h localhost -U gpizza gpizza
 
+CREATE DATABASE gpizza;
+ALTER DATABASE gpizza OWNER TO gpizza;
 
 DROP TABLE dish_ingredient;
 DROP TABLE dish;

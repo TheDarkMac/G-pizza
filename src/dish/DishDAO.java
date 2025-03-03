@@ -4,6 +4,7 @@ import criteria.CriteriaSELECT;
 import datasource.DAOSchema;
 import datasource.DataSource;
 import ingredient.Ingredient;
+import ingredientdish.IngredientDish;
 import unit.Unit;
 
 import java.sql.*;
@@ -60,18 +61,22 @@ public class DishDAO implements DAOSchema{
             preparedStatement.setInt(1, limit);
             preparedStatement.setInt(2, limit * (page - 1));
             ResultSet resultSet = preparedStatement.executeQuery();
-            Map<Ingredient, Double> ingredients = new HashMap<>();
+            List<IngredientDish> ingredientDishes = new ArrayList<>();
             while (resultSet.next()){
+                IngredientDish ingredientDish = new IngredientDish();
                 Ingredient ingredient = new Ingredient();
                 ingredient.setId(resultSet.getInt("id_ingredient"));
                 ingredient.setName(resultSet.getString("ingredient_name"));
                 ingredient.setIngredientCost(resultSet.getDouble("unit_price"));
                 ingredient.setUnit(Unit.valueOf(resultSet.getString("unit")));
-                ingredients.put(ingredient, resultSet.getDouble("quantity"));
+                ingredientDish.setIngredients(ingredient);
+                ingredientDish.setRequiredQuantity(resultSet.getDouble("quantity"));
+                ingredientDishes.add(ingredientDish);
                 dish.setId(resultSet.getInt("id_dish"));
                 dish.setName(resultSet.getString("dish_name"));
+                ingredientDish.setDish(dish);
             }
-            dish.setIngredients(ingredients);
+            dish.setIngredients(ingredientDishes);
         }catch (SQLException | RuntimeException e){
             throw new RuntimeException(e);
         }
@@ -99,10 +104,10 @@ public class DishDAO implements DAOSchema{
             CriteriaSELECT sub = new CriteriaSELECT("ingredient_price_history");
             sub.select("MAX(date_price)")
                     .and("ingredient_price_history.id_ingredient = ingredient.id_ingredient");
-            criteriaSELECT.and("dish.name ILIKE ?", "%"+criterias.get("ingredient_name")+"%");
+            criteriaSELECT.and("dish.name ILIKE ?", "%"+criterias.get("dish_name")+"%");
         } else {
             List< LocalDateTime > dateTimeList = (List<LocalDateTime>) criterias.get("date");
-            criteriaSELECT.and("dish.name ILIKE ?", "%"+criterias.get("ingredient_name")+"%")
+            criteriaSELECT.and("dish.name ILIKE ?", "%"+criterias.get("dish_name")+"%")
                     .andBetween("ingredient_price_history.date_price", dateTimeList.get(0), dateTimeList.get(1));
         }
 
@@ -115,18 +120,22 @@ public class DishDAO implements DAOSchema{
             }
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            Map<Ingredient, Double> ingredients = new HashMap<>();
+            List<IngredientDish> ingredients = new ArrayList<>();
             while (resultSet.next()){
+                IngredientDish ingredientDish = new IngredientDish();
                 Ingredient ingredient = new Ingredient();
                 ingredient.setId(resultSet.getInt("id_ingredient"));
                 ingredient.setName(resultSet.getString("ingredient_name"));
                 ingredient.setIngredientCost(resultSet.getDouble("unit_price"));
                 ingredient.setUnit(Unit.valueOf(resultSet.getString("unit")));
                 ingredient.setLastModification(resultSet.getTimestamp("date").toLocalDateTime());
-                ingredients.put(ingredient, resultSet.getDouble("quantity"));
+                ingredientDish.setRequiredQuantity(resultSet.getDouble("quantity"));
+                ingredientDish.setIngredients(ingredient);
                 dish.setId(resultSet.getInt("id_dish"));
                 dish.setName(resultSet.getString("dish_name"));
                 dish.setSelling_price(resultSet.getDouble("selling_price"));
+                ingredientDish.setDish(dish);
+                ingredients.add(ingredientDish);
             }
             dish.setIngredients(ingredients);
         }catch (SQLException | RuntimeException e){

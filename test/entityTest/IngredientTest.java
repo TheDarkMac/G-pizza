@@ -2,16 +2,17 @@ package entityTest;
 
 import ingredient.Ingredient;
 import ingredient.IngredientDAO;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import stock.Stock;
 import stock.StockDAO;
 import unit.Unit;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IngredientTest {
     @Test
+    @Order(1)
     void search_for_egg(){
         Map<String, Object> strings = new HashMap<>();
         String expected = "Oeuf";
@@ -21,14 +22,12 @@ public class IngredientTest {
         strings.put("unit_price", Arrays.asList(800,1200));
         strings.put("orderBy_name","DESC");
         List<Ingredient> ingredients = IngredientDAO.findAll(strings);
-        ingredients.forEach(ingredient -> {
-            System.out.println(ingredient);
-        });
         Assertions.assertEquals(expected,ingredients.get(0).getName());
         Assertions.assertEquals(1,ingredients.size());
     }
 
     @Test
+    @Order(2)
     void search_for_all_unit_gram(){
         Map<String, Object> strings = new HashMap<>();
         String[] expected = Arrays.asList("Oeuf", "Pain").toArray(new String[0]);
@@ -41,6 +40,7 @@ public class IngredientTest {
     }
 
     @Test
+    @Order(3)
     void verify_available_quantity_of_ingredient(){
         IngredientDAO ingredientDAO = new IngredientDAO();
         List<Ingredient> ingredients = ingredientDAO.findAll(new HashMap<>());
@@ -50,6 +50,7 @@ public class IngredientTest {
         Optional<Stock> stockHuile = stock.stream().filter(stock1 -> {
             return stock1.getIngredients().getName().equals("Huile");
         }).findFirst();
+        System.out.println(stockHuile);
         Optional<Ingredient> huile = ingredients.stream().filter(ingredient -> ingredient.getName().equals("Huile")).findFirst();
         Optional<Ingredient> saucisse = ingredients.stream().filter(ingredient -> ingredient.getName().equals("Saucisse")).findFirst();
 
@@ -59,6 +60,7 @@ public class IngredientTest {
     }
 
     @Test
+    @Order(4)
     void test_available_quantity_of_ingredient_without_call_stockDAO(){
         IngredientDAO ingredientDAO = new IngredientDAO();
         Map<String, Object> criteria = new HashMap<>();
@@ -71,6 +73,7 @@ public class IngredientTest {
     }
 
     @Test
+    @Order(5)
     void first_insertion(){
         IngredientDAO ingredientDAO = new IngredientDAO();
         Ingredient riz = new Ingredient();
@@ -85,6 +88,7 @@ public class IngredientTest {
     }
 
     @Test
+    @Order(6)
     void feind_by_name(){
         IngredientDAO ingredientDAO = new IngredientDAO();
         Map<String, Object> criteria = new HashMap<>();
@@ -100,6 +104,7 @@ public class IngredientTest {
     }
 
     @Test
+    @Order(7)
     void reinsertion(){
         IngredientDAO ingredientDAO = new IngredientDAO();
         Ingredient riz = new Ingredient();
