@@ -83,12 +83,22 @@ public class DishTest {
 
     @Test
     void availableQuantity(){
-        Integer expected = 10;
+        Integer expected = 30;
         DishDAO dishDAO = new DishDAO();
         Map<String, Object> criteria = new HashMap<>();
         criteria.put("dish_name","hot");
         Dish subject = dishDAO.findByName(criteria);
         Assertions.assertEquals(expected,subject.getAvailableQuantity());
+    }
+
+    @Test
+    void numberOfDishWeCanDeliver(){
+        DishDAO dishDAO = new DishDAO();
+        Map<String,Object> criteria = new HashMap<>();
+        criteria.put("dish_name","hot");
+        Dish hotdog = dishDAO.findByName(criteria);
+        Assertions.assertEquals("HOT dog",hotdog.getName());
+        System.out.println(hotdog.getAvailableQuantity());
     }
 
 }

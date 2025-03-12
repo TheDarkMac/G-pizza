@@ -34,14 +34,12 @@ public class IngredientDAO implements DAOSchema{
                         "ingredient.name AS ingredient_name",
                         "ingredient.unit AS unit"));
                 Ingredient ingredient1 = findByName(criterias_1);
-                System.out.println("ingredient1 : "+ ingredient1) ;
                 criteriaInsertPrice.insert("id_ingredient","unit_price")
                         .values(ingredient1.getId(),ingredient.getIngredientCost());
                 String query1 = criteriaInsertPrice.build();
                 try (Connection connection1 = ds.getConnection()){
                     PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
                     List<Object> params1 = criteriaInsertPrice.getParameters();
-                    System.out.println("params1 : "+ params1) ;
                     for (int i = 0; i < params.size(); i++) {
                         preparedStatement1.setObject(i + 1, params1.get(i),Types.OTHER);
                     }
@@ -80,7 +78,6 @@ public class IngredientDAO implements DAOSchema{
         if (criterias.containsKey("fields")){
             List<String> fields = (List<String>) criterias.get("fields");
             String selectQuery = String.join(",",fields);
-            System.out.println(selectQuery);
             criteriaSELECT.select(selectQuery);
         }else {
             criteriaSELECT.select("ingredient.id_ingredient AS id_ingredient",
@@ -89,7 +86,6 @@ public class IngredientDAO implements DAOSchema{
                     "ingredient_price_history.date_price AS updatedAt",
                     "ingredient_price_history.unit_price AS unit_price")
                     .join("INNER", "ingredient_price_history", "ingredient_price_history.id_ingredient = ingredient.id_ingredient");
-
         }
         if (criterias.containsKey("ingredient_name")) {
             criteriaSELECT.and("ingredient.name ILIKE ? ", "%"+criterias.get("ingredient_name")+"%");

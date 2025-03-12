@@ -1,12 +1,12 @@
-\c postgres
+-- \c postgres
 
-CREATE ROLE gpizza WITH ENCRYPTED PASSWORD 'gpizza' LOGIN CREATEDB;
+-- CREATE ROLE gpizza WITH ENCRYPTED PASSWORD 'gpizza' LOGIN CREATEDB;
 
 -- ceci n'est qu un racourci mais pour plus de verbalite, on cree et on reattribut le proprietaire
 -- CREATE -h localhost -U gpizza gpizza
 
-CREATE DATABASE gpizza;
-ALTER DATABASE gpizza OWNER TO gpizza;
+-- CREATE DATABASE gpizza;
+-- ALTER DATABASE gpizza OWNER TO gpizza;
 
 DROP TABLE dish_ingredient;
 DROP TABLE dish;
@@ -15,6 +15,8 @@ DROP TABLE stock;
 DROP TABLE ingredient;
 DROP TYPE movement_type;
 DROP TYPE unit;
+DROP TABLE available_quantity;
+DROP FUNCTION update_available_quantity CASCADE;
 
 CREATE TYPE unit AS ENUM('G','L','U');
 
@@ -55,15 +57,59 @@ CREATE TABLE stock(
     id_stock BIGSERIAL PRIMARY KEY,
     id_ingredient BIGINT,
     quantity DECIMAL(10,2),
-    date_of_movement TIMESTAMP,
+    date_of_movement TIMESTAMP DEFAULT NOW(),
     movement_type movement_type,
     CONSTRAINT pk_stock_id_ingredient FOREIGN KEY (id_ingredient) REFERENCES ingredient(id_ingredient) ON DELETE CASCADE
 );
 
-DROP TABLE dish_ingredient;
-DROP TABLE dish;
-DROP TABLE ingredient_price_history;
-DROP TABLE stock;
-DROP TABLE ingredient;
-DROP TYPE movement_type;
-DROP TYPE unit;
+CREATE TABLE available_quantity(
+    id_ingredient BIGSERIAL PRIMARY KEY,
+    available_quantity DECIMAL(10,2),
+    date_of_last_movement TIMESTAMP,
+    CONSTRAINT pk_available_quantity FOREIGN KEY (id_ingredient) REFERENCES ingredient(id_ingredient) ON DELETE CASCADE
+);
+
+CREATE OR REPLACE FUNCTION update_available_quantity()
+RETURNS TRIGGER AS $$
+DECLARE
+    current_quantity DECIMAL(10,2);
+BEGIN
+    -- Récupérer la quantité disponible actuelle
+    SELECT available_quantity INTO current_quantity
+    FROM available_quantity
+    WHERE id_ingredient = NEW.id_ingredient
+    FOR UPDATE;
+
+    -- Si c'est un "out" et qu'il n'y a pas assez de stock
+    IF NEW.movement_type = 'out' AND (current_quantity IS NULL OR current_quantity < NEW.quantity) THEN
+        RAISE EXCEPTION 'Stock insuffisant pour l''ingrédient %', NEW.id_ingredient;
+    END IF;
+
+    -- Mise a jour de la quantite disponible
+    INSERT INTO available_quantity (id_ingredient, available_quantity, date_of_last_movement)
+    VALUES (NEW.id_ingredient,
+            COALESCE(current_quantity, 0) + CASE WHEN NEW.movement_type = 'in' THEN NEW.quantity ELSE -NEW.quantity END,
+            NEW.date_of_movement)
+    ON CONFLICT (id_ingredient)
+    DO UPDATE SET
+        available_quantity = available_quantity + CASE WHEN NEW.movement_type = 'in' THEN NEW.quantity ELSE -NEW.quantity END,
+        date_of_last_movement = NEW.date_of_movement;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger sur la table stock
+CREATE TRIGGER trg_update_available_quantity
+AFTER INSERT ON stock
+FOR EACH ROW EXECUTE FUNCTION update_available_quantity();
+
+
+-----createion de la table commande-----
+
+CREATE TABLE order(
+    id BIGSERIAL PRIMARY KEY,
+    datetime_of_order TIMESTAMP,
+    id_dish BIGINT,
+    CONSTRAINT pk_order_id_dish FOREIGN KEY (id_dish) REFERENCES (dish).id_dish DELETE ON CASCADE;
+);

@@ -22,9 +22,35 @@ public class StockTest {
         List<Stock> stocks = stockDAO.getStockOf(params);
         Assertions.assertNotNull(stocks);
         Assertions.assertEquals(1, stocks.size());
-        Assertions.assertEquals(20.0,stocks.get(0).getQuantity());
+        Assertions.assertEquals(20.0, stocks.get(0).getQuantity());
     }
 
+    @Test
+    public void insertRizAndSel(){
+        IngredientDAO ingredientDAO = new IngredientDAO();
+        Map<String, Object> params = new HashMap<>();
+        params.put("ingredient_name", "sel");
+        Ingredient sel = ingredientDAO.findByName(params);
+        Map<String, Object> params2 = new HashMap<>();
+        params2.put("ingredient_name","riz");
+        Ingredient riz = ingredientDAO.findByName(params2);
+        StockDAO stockDAO = new StockDAO();
+        Stock stockriz = new Stock();
+        stockriz.setIngredients(riz);
+        stockriz.setQuantity(10000.0);
+        stockriz.setMovement_type(MovementType.IN);
+        //stockDAO.addStock(stockriz,new HashMap<>());
+
+        Stock stocksel = new Stock();
+        stocksel.setIngredients(sel);
+        stocksel.setQuantity(1000.0);
+        stocksel.setMovement_type(MovementType.IN);
+      //  stockDAO.addStock(stocksel,new HashMap<>());
+
+        Assertions.assertEquals(1000.0, sel.getAvailableQuantity());
+        Assertions.assertEquals(10000.0, riz.getAvailableQuantity());
+    }
+}
 //    @Test
 //    void insert_stock(){
 //        StockDAO stockDAO = new StockDAO();
@@ -40,57 +66,7 @@ public class StockTest {
 //        stockDAO.addStock(stock,new HashMap<>());
 //    }
 
-    @Test
-    void take_eggs(){
-        StockDAO stockDAO = new StockDAO();
-        IngredientDAO ingredientDAO = new IngredientDAO();
-        Map<String, Object> params = new HashMap<>();
-        params.put("ingredient_name", "oeuf");
-        Ingredient oeuf = ingredientDAO.findByName(params);
-        Stock stock = new Stock();
-        stock.setIngredients(oeuf);
-        stock.setQuantity(10.0);
-        stock.setMovement_type(MovementType.OUT);
-        stock.setLastMovement(LocalDateTime.of(2025,2,2,10,0));
-        Map<String,Object> date = new HashMap<>();
-        date.put("date_of_movement",LocalDateTime.of(2025,2,2,10,0));
-        stockDAO.addStock(stock,date);
 
-    }
-    @Test
-    void take_eggs2() {
-        StockDAO stockDAO = new StockDAO();
-        IngredientDAO ingredientDAO = new IngredientDAO();
-        Map<String, Object> params = new HashMap<>();
-        params.put("ingredient_name", "oeuf");
-        Ingredient oeuf = ingredientDAO.findByName(params);
-        Stock stock = new Stock();
-        stock.setIngredients(oeuf);
-        stock.setQuantity(10.0);
-        stock.setMovement_type(MovementType.OUT);
-        stock.setLastMovement(LocalDateTime.of(2025, 2, 3, 15, 0));
-        Map<String, Object> date = new HashMap<>();
-        date.put("date_of_movement",null);
-        stockDAO.addStock(stock, date);
-    }
-
-    @Test
-    void take_pain() {
-        StockDAO stockDAO = new StockDAO();
-        IngredientDAO ingredientDAO = new IngredientDAO();
-        Map<String, Object> params = new HashMap<>();
-        params.put("ingredient_name", "pain");
-        Ingredient pain = ingredientDAO.findByName(params);
-        Stock stock = new Stock();
-        stock.setIngredients(pain);
-        stock.setQuantity(20.0);
-        stock.setMovement_type(MovementType.OUT);
-        stock.setLastMovement(LocalDateTime.of(2025, 2, 5, 16, 0));
-        Map<String, Object> date = new HashMap<>();
-        date.put("date_of_movement", null);
-        stockDAO.addStock(stock, date);
-    }
-}
 
 //    @Test
 //    void eggfarany() {

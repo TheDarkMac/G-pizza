@@ -23,7 +23,6 @@ public class StockDAO {
         }else {
             criteriaINSERT.insert("id_ingredient","quantity","movement_type");
             criteriaINSERT.values(stock.getIngredients().getId(),stock.getQuantity(),stock.getMovement_type());
-
         }
 
         String query = criteriaINSERT.build();
@@ -53,10 +52,13 @@ public class StockDAO {
                 "ingredient_price_history.unit_price AS unit_price",
                 "ingredient_price_history.date_price AS date_price",
                 "stock.id_stock AS id_stock",
-                "stock.quantity AS quantity",
+                "available_quantity AS quantity",
                 "stock.date_of_movement AS date_of_movement"
-        ).join("INNER","ingredient","ingredient.id_ingredient = stock.id_ingredient")
-                .join("INNER","ingredient_price_history","ingredient_price_history.id_ingredient = ingredient.id_ingredient");
+        )
+                .join("INNER","ingredient","ingredient.id_ingredient = stock.id_ingredient")
+                .join("INNER","ingredient_price_history","ingredient_price_history.id_ingredient = ingredient.id_ingredient")
+                .join("INNER", "available_quantity","available_quantity.id_ingredient = ingredient.id_ingredient")
+        ;
 
         if (criterias.containsKey("ingredient_name")){
             criteriaSELECT.and("ingredient.name ILIKE ?",criterias.get("ingredient_name")+"%");

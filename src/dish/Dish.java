@@ -6,13 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import order.OrderStatus;
 import stock.Stock;
 import stock.StockDAO;
 
 import java.util.*;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 public class Dish {
@@ -20,6 +21,7 @@ public class Dish {
     private String name;
     private double selling_price;
     private List<IngredientDish> ingredients;
+    private OrderStatus status;
 
     public Dish(String name, double selling_price, List<IngredientDish> ingredients) {
         this.name = name;
@@ -47,12 +49,10 @@ public class Dish {
             Map<String, Object> criteria = new HashMap<>();
             criteria.put("ingredient_name",ingredient_name);
             List<Stock> stock = stockDAO.getStockOf(criteria);
-            System.out.println(stock);
             int make_number = (int) (stock.get(0).getQuantity() / quantity);
             makes_number.add(make_number);
         });
-        Optional<Integer> result =  makes_number.stream().min(Integer::compareTo);
-        return result.orElse(0);
+        return makes_number.stream().min(Integer::compareTo).get();
     }
 
     @Override

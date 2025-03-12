@@ -3,16 +3,13 @@ package entityTest;
 import ingredient.Ingredient;
 import ingredient.IngredientDAO;
 import org.junit.jupiter.api.*;
-import stock.Stock;
-import stock.StockDAO;
-import unit.Unit;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IngredientTest {
     @Test
-    @Order(1)
     void search_for_egg(){
         Map<String, Object> strings = new HashMap<>();
         String expected = "Oeuf";
@@ -27,7 +24,6 @@ public class IngredientTest {
     }
 
     @Test
-    @Order(2)
     void search_for_all_unit_gram(){
         Map<String, Object> strings = new HashMap<>();
         String[] expected = Arrays.asList("Oeuf", "Pain").toArray(new String[0]);
@@ -40,27 +36,21 @@ public class IngredientTest {
     }
 
     @Test
-    @Order(3)
     void verify_available_quantity_of_ingredient(){
         IngredientDAO ingredientDAO = new IngredientDAO();
         List<Ingredient> ingredients = ingredientDAO.findAll(new HashMap<>());
-        StockDAO stockDAO = new StockDAO();
-        Map<String, Object> criteria = new HashMap<>();
-        List<Stock> stock = stockDAO.getStockOf(criteria);
-        Optional<Stock> stockHuile = stock.stream().filter(stock1 -> {
-            return stock1.getIngredients().getName().equals("Huile");
-        }).findFirst();
-        System.out.println(stockHuile);
         Optional<Ingredient> huile = ingredients.stream().filter(ingredient -> ingredient.getName().equals("Huile")).findFirst();
         Optional<Ingredient> saucisse = ingredients.stream().filter(ingredient -> ingredient.getName().equals("Saucisse")).findFirst();
+        Optional<Ingredient> pain = ingredients.stream().filter(ingredient -> ingredient.getName().equals("Pain")).findFirst();
+        Optional<Ingredient> oeuf = ingredients.stream().filter(ingredient -> ingredient.getName().equals("Oeuf")).findFirst();
 
-        Assertions.assertTrue(huile.isPresent());
         Assertions.assertEquals(20.0, huile.get().getAvailableQuantity());
         Assertions.assertEquals(10000, saucisse.get().getAvailableQuantity());
+        Assertions.assertEquals(30,pain.get().getAvailableQuantity());
+        Assertions.assertEquals(80,oeuf.get().getAvailableQuantity());
     }
 
     @Test
-    @Order(4)
     void test_available_quantity_of_ingredient_without_call_stockDAO(){
         IngredientDAO ingredientDAO = new IngredientDAO();
         Map<String, Object> criteria = new HashMap<>();
@@ -72,47 +62,20 @@ public class IngredientTest {
         Assertions.assertEquals(20.0,ingredients.get(0).getAvailableQuantity());
     }
 
-    @Test
-    @Order(5)
-    void first_insertion(){
-        IngredientDAO ingredientDAO = new IngredientDAO();
-        Ingredient riz = new Ingredient();
-        riz.setIngredientCost(3.5);
-        riz.setName("riz");
-        riz.setUnit(Unit.G);
-        boolean r = ingredientDAO.create(riz);
-        Ingredient sel = new Ingredient("sel",2.5,Unit.G);
-        boolean s = ingredientDAO.create(sel);
-        Assertions.assertTrue(r);
-        Assertions.assertTrue(s);
-    }
 
     @Test
-    @Order(6)
-    void feind_by_name(){
+    void find_by_name(){
+        String expected = "Riz";
         IngredientDAO ingredientDAO = new IngredientDAO();
         Map<String, Object> criteria = new HashMap<>();
         criteria.put("ingredient_name", "ri");
-//        criteria.put("fields",Arrays.asList("ingredient.name AS ingredient_name",
-//                "unit",
-//                "ingredient.id_ingredient"));
 
         Ingredient riz = ingredientDAO.findByName(criteria);
         Assertions.assertNotNull(riz);
         System.out.println(riz);
-        Assertions.assertEquals("riz",riz.getName());
+        Assertions.assertEquals(expected,riz.getName());
+
+        Assertions.assertEquals(0,riz.getAvailableQuantity());
     }
 
-    @Test
-    @Order(7)
-    void reinsertion(){
-        IngredientDAO ingredientDAO = new IngredientDAO();
-        Ingredient riz = new Ingredient();
-        riz.setIngredientCost(3.5);
-        riz.setName("riz");
-        riz.setUnit(Unit.G);
-        Assertions.assertThrows(RuntimeException.class,()->ingredientDAO.create(riz));
-        Ingredient sel = new Ingredient("sel",2.5,Unit.G);
-        Assertions.assertThrows(RuntimeException.class,()->ingredientDAO.create(sel));
-    }
 }

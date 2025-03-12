@@ -1,12 +1,12 @@
-
-
-DROP TABLE dish_ingredient;
-DROP TABLE dish;
-DROP TABLE ingredient_price_history;
-DROP TABLE stock;
-DROP TABLE ingredient;
-DROP TYPE movement_type;
-DROP TYPE unit;
+DROP TABLE IF EXISTS dish_ingredient CASCADE;
+DROP TABLE IF EXISTS dish CASCADE;
+DROP TABLE IF EXISTS ingredient_price_history CASCADE;
+DROP TABLE IF EXISTS stock CASCADE;
+DROP TABLE IF EXISTS ingredient CASCADE;
+DROP TYPE IF EXISTS movement_type CASCADE;
+DROP TYPE IF EXISTS unit CASCADE;
+DROP TABLE IF EXISTS available_quantity CASCADE;
+DROP TABLE IF EXISTS "order";
 
 CREATE TYPE unit AS ENUM('G','L','U');
 
@@ -47,11 +47,61 @@ CREATE TABLE stock(
     id_stock BIGSERIAL PRIMARY KEY,
     id_ingredient BIGINT,
     quantity DECIMAL(10,2),
-    date_of_movement TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    movement_type movement_type NOT NULL,
+    date_of_movement TIMESTAMP DEFAULT NOW(),
+    movement_type movement_type,
     CONSTRAINT pk_stock_id_ingredient FOREIGN KEY (id_ingredient) REFERENCES ingredient(id_ingredient) ON DELETE CASCADE
 );
 
+CREATE TABLE available_quantity(
+    id_ingredient BIGINT PRIMARY KEY,
+    available_quantity DECIMAL(10,2),
+    date_of_last_movement TIMESTAMP,
+    CONSTRAINT pk_available_quantity FOREIGN KEY (id_ingredient) REFERENCES ingredient(id_ingredient) ON DELETE CASCADE
+);
+
+CREATE OR REPLACE FUNCTION update_available_quantity()
+RETURNS TRIGGER AS $$
+DECLARE
+    current_quantity DECIMAL(10,2);
+BEGIN
+    -- Récuperer la quantite disponible actuelle
+    SELECT available_quantity INTO current_quantity
+    FROM "available_quantity" AS aq
+    WHERE aq.id_ingredient = NEW.id_ingredient
+    FOR UPDATE;
+
+    -- Si c'est un "OUT" et qu'il n'y a pas assez de stock
+    IF NEW.movement_type = 'OUT' AND (current_quantity IS NULL OR current_quantity < NEW.quantity) THEN
+        RAISE EXCEPTION 'Stock insuffisant pour l''ingrédient %', NEW.id_ingredient;
+    END IF;
+
+    -- Mise à jour de la quantité disponible
+    INSERT INTO "available_quantity" (id_ingredient, available_quantity, date_of_last_movement)
+    VALUES (NEW.id_ingredient,
+            COALESCE(current_quantity, 0) + CASE WHEN NEW.movement_type = 'IN' THEN NEW.quantity ELSE -NEW.quantity END,
+            NEW.date_of_movement)
+    ON CONFLICT (id_ingredient)
+    DO UPDATE SET
+        available_quantity = "available_quantity".available_quantity + CASE WHEN NEW.movement_type = 'IN' THEN NEW.quantity ELSE -NEW.quantity END,
+        date_of_last_movement = NEW.date_of_movement;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger sur la table stock
+CREATE TRIGGER trg_update_available_quantity
+AFTER INSERT ON stock
+FOR EACH ROW EXECUTE FUNCTION update_available_quantity();
+
+CREATE TABLE "order"(
+    id BIGSERIAL PRIMARY KEY,
+    datetime_of_order TIMESTAMP,
+    id_dish BIGINT,
+    CONSTRAINT pk_order_id_dish FOREIGN KEY (id_dish) REFERENCES dish(id_dish) ON DELETE CASCADE
+);
+
+---------INSERTION-----------------------
 INSERT INTO ingredient(name, unit)
 VALUES ('Saucisse', 'G'),
        ('Huile', 'L'),
@@ -64,17 +114,40 @@ VALUES (1, '2025-01-01', 20),
        (3, '2025-01-01', 1000),
        (4, '2025-01-01', 1000);
 
+----creation du dish hot dog ----
 INSERT INTO dish(name, unit_price)
 VALUES ('HOT dog', 15000);
 
+---les ingredients qui composent un hot dog-----
 INSERT INTO dish_ingredient(id_dish, id_ingredient, quantity, unit)
 VALUES (1, 1, 100, 'G'),
        (1, 2, 0.15, 'L'),
        (1, 3, 1, 'U'),
        (1, 4, 1, 'U');
 
+----mouvement de stocks fait le 1 fevier a 8h (pprovisionnement)--------
+--- oeuf 100, pain 50, saucisse 10kg, huile 20 ------
 INSERT INTO stock(id_ingredient, quantity, date_of_movement, movement_type)
-    VALUES(3,100,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
-       (4,10,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
+    VALUES
+       (3,100,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
+       (4,50,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
        (1,10000,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
        (2,20,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN');
+
+----movement de stock (sortie)-------
+---- oeuf 10 le 2 fev 10h, oeuf 10 le 3 fev a 15h, pain 20 le 5 fev a 16h
+INSERT INTO stock(id_ingredient, quantity, date_of_movement, movement_type)
+    VALUES
+       (3,10,TO_TIMESTAMP('2025-2-2 10:00:00','YYYY-MM-DD HH24:MI:SS'),'OUT'),
+       (3,10,TO_TIMESTAMP('2025-2-3 15:00:00','YYYY-MM-DD HH24:MI:SS'),'OUT'),
+       (4,20,TO_TIMESTAMP('2025-2-5 16:00:00','YYYY-MM-DD HH24:MI:SS'),'OUT');
+
+----insertion de riz et sel----------------------
+INSERT INTO ingredient(name,unit)
+VALUES ('Sel','G'),
+       ('Riz','G');
+
+----met des prix au riz et sel----
+INSERT INTO ingredient_price_history(id_ingredient, date_price, unit_price)
+VALUES (5, '2025-02-25', 2.5),
+       (6, '2025-02-25', 3.5);
