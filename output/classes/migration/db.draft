@@ -94,11 +94,18 @@ CREATE TRIGGER trg_update_available_quantity
 AFTER INSERT ON stock
 FOR EACH ROW EXECUTE FUNCTION update_available_quantity();
 
-CREATE TABLE "order"(
+CREATE TABLE order(
+    id_order BIGSERIAL PRIMARY KEY,
+    datetime_of_order TIMESTAMP;
+);
+
+CREATE TABLE dish_order(
     id BIGSERIAL PRIMARY KEY,
-    datetime_of_order TIMESTAMP,
-    id_dish BIGINT,
-    CONSTRAINT pk_order_id_dish FOREIGN KEY (id_dish) REFERENCES dish(id_dish) ON DELETE CASCADE
+    id_dish BIGSERIAL,
+    id_order BIGSERIAL,
+    status order_status.
+    CONSTRAINT pk_dish_order_id_dish FOREIGN KEY (id_dish) REFERENCES dish(id_dish) ON DELETE CASCADE,
+    CONSTRAINT pk_dish_order_id_order FOREIGN KEY (id_order) REFERENCES order(id_order) ON DELETE CASCADE
 );
 
 ---------INSERTION-----------------------

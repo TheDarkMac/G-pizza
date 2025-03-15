@@ -18,7 +18,8 @@ public class IngredientTest {
         strings.put("updatedAt", Arrays.asList(LocalDateTime.of(2024,12,31,0,0,0),LocalDateTime.of(2025,1,5,0,0,0)));
         strings.put("unit_price", Arrays.asList(800,1200));
         strings.put("orderBy_name","DESC");
-        List<Ingredient> ingredients = IngredientDAO.findAll(strings);
+        IngredientDAO ingredientDAO =  new IngredientDAO();
+        List<Ingredient> ingredients = ingredientDAO.findAll(strings);
         Assertions.assertEquals(expected,ingredients.get(0).getName());
         Assertions.assertEquals(1,ingredients.size());
     }
@@ -29,7 +30,8 @@ public class IngredientTest {
         String[] expected = Arrays.asList("Oeuf", "Pain").toArray(new String[0]);
         strings.put("unit", "U");
         strings.put("orderBy_name",false);
-        List<Ingredient> ingredients = IngredientDAO.findAll(strings);
+        IngredientDAO ingredientDAO =  new IngredientDAO();
+        List<Ingredient> ingredients = ingredientDAO.findAll(strings);
         Assertions.assertEquals(expected.length,ingredients.size());
         Assertions.assertEquals(expected[0],ingredients.get(1).getName());
         Assertions.assertEquals(expected[1],ingredients.get(0).getName());

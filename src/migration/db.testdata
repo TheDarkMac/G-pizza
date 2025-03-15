@@ -1,26 +1,56 @@
+----insertion des ingredients---------
+----saucisse, huile, oeuf, pain-------
 INSERT INTO ingredient(name, unit)
 VALUES ('Saucisse', 'G'),
        ('Huile', 'L'),
        ('Oeuf', 'U'),
        ('Pain', 'U');
 
+----mettre les prix des ingredients----
+----a la date du 1 fevrier 2025--------
 INSERT INTO ingredient_price_history(id_ingredient, date_price, unit_price)
 VALUES (1, '2025-01-01', 20),
        (2, '2025-01-01', 10000),
        (3, '2025-01-01', 1000),
        (4, '2025-01-01', 1000);
 
+----creation du dish hot dog --------
+----avec un prix unitaire de 15000---
 INSERT INTO dish(name, unit_price)
 VALUES ('HOT dog', 15000);
 
+----les ingredients qui composent un hot dog-----
+----saucisse 100, huile 0.15, oeuf 1, pain 1 ----
 INSERT INTO dish_ingredient(id_dish, id_ingredient, quantity, unit)
 VALUES (1, 1, 100, 'G'),
        (1, 2, 0.15, 'L'),
        (1, 3, 1, 'U'),
        (1, 4, 1, 'U');
 
+----mouvement de stocks fait le 1 fevier a 8h (pprovisionnement)--------
+----oeuf 100, pain 50, saucisse 10kg, huile 20--------------------------
 INSERT INTO stock(id_ingredient, quantity, date_of_movement, movement_type)
-VALUES(3,100,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in'),
-      (4,10,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in'),
-      (1,10000,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in'),
-      (2,20,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in');
+    VALUES
+       (3,100,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
+       (4,50,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
+       (1,10000,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
+       (2,20,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN');
+
+----movement de stock (sortie)-------
+----oeuf 10 le 2 fev 10h, oeuf 10 le 3 fev a 15h, pain 20 le 5 fev a 16h
+INSERT INTO stock(id_ingredient, quantity, date_of_movement, movement_type)
+    VALUES
+       (3,10,TO_TIMESTAMP('2025-2-2 10:00:00','YYYY-MM-DD HH24:MI:SS'),'OUT'),
+       (3,10,TO_TIMESTAMP('2025-2-3 15:00:00','YYYY-MM-DD HH24:MI:SS'),'OUT'),
+       (4,20,TO_TIMESTAMP('2025-2-5 16:00:00','YYYY-MM-DD HH24:MI:SS'),'OUT');
+
+----insertion de riz et sel----------------------
+INSERT INTO ingredient(name,unit)
+VALUES ('Sel','G'),
+       ('Riz','G');
+
+----mettre les prix au riz et sel----
+----riz 3.5, sel 2.5-----------------
+INSERT INTO ingredient_price_history(id_ingredient, date_price, unit_price)
+VALUES (5, '2025-02-25', 2.5),
+       (6, '2025-02-25', 3.5);

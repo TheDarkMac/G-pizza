@@ -26,7 +26,7 @@ public class Ingredient {
     private double ingredientCost;
     private Unit unit;
     private HashMap<Timestamp, Double> price_at;
-    private Stock stock;
+    private IngredientStock stock = new IngredientStock(this);
 
     public Ingredient(String name,Unit unit){
         this.name = name;
@@ -56,15 +56,7 @@ public class Ingredient {
     }
 
     public Double getAvailableQuantity(){
-        StockDAO stockDAO = new StockDAO();
-        List<Stock> stockList = stockDAO.getStockOf(new HashMap<>());
-        AtomicReference<Double> result = new AtomicReference<>(0.0);
-        stockList.forEach(stock -> {
-            if(stock.getIngredients().getName().equals(this.name)){
-                result.set(stock.getQuantity());
-            }
-        });
-        return result.get();
+        return stock.getQuantity();
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class IngredientDAO implements DAOSchema{
-    private static DataSource ds = new DataSource();
+    private DataSource ds = new DataSource();
 
     @Override
     public <T> boolean create(T object) {
@@ -157,7 +157,7 @@ public class IngredientDAO implements DAOSchema{
         }
     }
 
-    public static List<Ingredient> findAll(Map<String, Object> criterias) {
+    public List<Ingredient> findAll(Map<String, Object> criterias) {
         List<Ingredient> ingredients = new ArrayList<>();
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("ingredient");
         criteriaSELECT.select(
