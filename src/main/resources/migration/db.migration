@@ -1,12 +1,12 @@
 -- \c postgres
 
--- CREATE ROLE gpizza WITH ENCRYPTED PASSWORD 'gpizza' LOGIN CREATEDB;
+-- CREATE ROLE fako WITH ENCRYPTED PASSWORD 'fako' LOGIN CREATEDB;
 
 -- ceci n'est qu un racourci mais pour plus de verbalite, on cree et on reattribut le proprietaire
--- CREATE -h localhost -U gpizza gpizza
+-- CREATE -h localhost -U fako fako
 
--- CREATE DATABASE gpizza;
--- ALTER DATABASE gpizza OWNER TO gpizza;
+-- CREATE DATABASE fako;
+-- ALTER DATABASE fako OWNER TO fako;
 
 DROP TABLE IF EXISTS dish_ingredient CASCADE;
 DROP TABLE IF EXISTS dish CASCADE;
