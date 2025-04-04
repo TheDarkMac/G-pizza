@@ -1,5 +1,6 @@
 package torn.ando.gpizzasb.gpizza.dao;
 
+import lombok.AllArgsConstructor;
 import torn.ando.gpizzasb.gpizza.criteria.CriteriaINSERT;
 import torn.ando.gpizzasb.gpizza.criteria.CriteriaSELECT;
 import torn.ando.gpizzasb.gpizza.criteria.CriteriaUPDATE;
@@ -15,17 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class IngredientDAO implements DAOSchema{
 
-    private DataSource dataSource;
-    private IngredientPriceDAO ingredientPriceDAO;
-    private StockDAO stockDAO;
-
-    public IngredientDAO(DataSource dataSource, IngredientPriceDAO ingredientPriceDAO, StockDAO stockDAO) {
-        this.dataSource = dataSource;
-        this.ingredientPriceDAO = ingredientPriceDAO;
-        this.stockDAO = stockDAO;
-    }
+    private final DataSource dataSource;
+    private final IngredientPriceDAO ingredientPriceDAO;
+    private final StockDAO stockDAO;
 
     @Override
     public <T> List<T> saveAll(List<T> object) {

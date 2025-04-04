@@ -1,32 +1,172 @@
 openapi: 3.1.0
 info:
-  title: Gastronomie Pizza
-  description: Gastronomie Pizza API Specification
+  title: Gastronomie Pizza API
+  description: API de gestion des ingrédients, plats et commandes pour Gastronomie Pizza
   version: 1.0.0
 servers:
   - url: 'http://localhost:8080'
+
 paths:
   /ingredients:
     get:
-      description: Get the list of all ingredients
-      operationId: getAll
+      summary: Liste des ingrédients
+      operationId: getAllIngredients
       responses:
         '200':
-          description: Successful response
+          description: Liste des ingrédients avec détails
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Ingredient'
-        '500':
-          description: Internal server error
+
+  /ingredients/{id}/prices:
     put:
-      description: Add new ingredient
-      operationId: add
+      summary: Ajouter une liste de prix à un ingrédient
+      operationId: addIngredientPrices
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Price'
       responses:
-        '201':
-          description: created with success
+        '200':
+          description: Historique des prix mis à jour
+
+  /ingredients/{id}/stockMovements:
+    put:
+      summary: Ajouter des mouvements de stock à un ingrédient
+      operationId: addStockMovements
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Stock'
+      responses:
+        '200':
+          description: Historique des mouvements mis à jour
+
+  /dishes:
+    get:
+      summary: Liste des plats
+      operationId: getAllDishes
+      responses:
+        '200':
+          description: Liste des plats avec leurs ingrédients et quantités disponibles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dish'
+
+  /dishes/{id}/ingredients:
+    put:
+      summary: Ajouter des ingrédients à un plat
+      operationId: addDishIngredients
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/DishIngredient'
+      responses:
+        '200':
+          description: Ingrédients ajoutés au plat
+
+  /orders/{reference}:
+    get:
+      summary: Récupérer une commande par référence
+      operationId: getOrderByReference
+      parameters:
+        - name: reference
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Détails de la commande
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Commande non trouvée
+
+  /orders/{reference}/dishes:
+    put:
+      summary: Modifier la liste des plats d'une commande
+      operationId: updateOrderDishes
+      parameters:
+        - name: reference
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dishes:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/OrderDish'
+                status:
+                  $ref: '#/components/schemas/OrderStatusType'
+      responses:
+        '200':
+          description: Commande mise à jour
+
+  /orders/{reference}/dishes/{dishId}:
+    put:
+      summary: Modifier le statut d'un plat dans une commande
+      operationId: updateDishStatus
+      parameters:
+        - name: reference
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: dishId
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDishStatus'
+      responses:
+        '200':
+          description: Statut du plat mis à jour
 
 components:
   schemas:
@@ -40,6 +180,7 @@ components:
         unit:
           $ref: '#/components/schemas/Unit'
         prices:
+          type: array
           items:
             $ref: '#/components/schemas/Price'
         availableQuantity:
@@ -56,8 +197,7 @@ components:
           type: number
         dateValue:
           type: string
-          pattern: '^\d{2}-\d{2}-\d{2}$'
-          example: "01-04-25"
+          format: date
 
     Stock:
       type: object
@@ -65,11 +205,80 @@ components:
         id:
           type: number
         quantityINOUT:
+          type: number
+        movementType:
           $ref: '#/components/schemas/StockMovementType'
         dateOfMovement:
           type: string
-          pattern: '^\d{2}-\d{2}-\d{2}$'
-          example: "01-04-25"
+          format: date-time
+
+    Dish:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        price:
+          type: number
+        dishIngredientList:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishIngredient'
+
+    DishIngredient:
+      type: object
+      properties:
+        id:
+          type: number
+        ingredient:
+          $ref: '#/components/schemas/Ingredient'
+        requiredQuantity:
+          type: number
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: number
+        reference:
+          type: string
+        orderDishList:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDish'
+        orderStatus:
+          $ref: '#/components/schemas/OrderStatusType'
+
+    OrderDish:
+      type: object
+      properties:
+        id:
+          type: number
+        dish:
+          $ref: '#/components/schemas/Dish'
+        quantity:
+          type: number
+
+    OrderDishStatus:
+      type: object
+      properties:
+        id:
+          type: number
+        orderStatus:
+          $ref: '#/components/schemas/OrderStatusType'
+        updateAt:
+          type: string
+          format: date-time
+
+    OrderStatusType:
+      type: string
+      enum:
+        - CREATED
+        - CONFIRMED
+        - IN_PROGRESS
+        - FINISHED
+        - DELIVERED
 
     Unit:
       type: string

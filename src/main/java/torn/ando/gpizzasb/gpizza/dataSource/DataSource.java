@@ -19,10 +19,6 @@ public class DataSource implements Serializable {
     private String password = dotenv.get("DB_PASSWORD");
     private String dbName = dotenv.get("DB_NAME");
 
-    public DataSource() {
-
-    }
-
     public Connection getConnection() {
         try{
             connection = DriverManager.getConnection(
