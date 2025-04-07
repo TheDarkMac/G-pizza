@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import torn.ando.gpizzasb.gpizza.enums.OrderStatusType;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -28,5 +30,12 @@ public class OrderDish {
                 ", quantity=" + quantity +
                 ", orderStatusList=" + orderStatusList +
                 '}';
+    }
+
+    public OrderStatusType getActualStatus(){
+        return orderStatusList.stream()
+                .max(Comparator.comparing(OrderDishStatus::getUpdateAt))
+                .map(OrderDishStatus::getOrderStatus)
+                .orElse(null);
     }
 }

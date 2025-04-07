@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import torn.ando.gpizzasb.gpizza.dao.OrderDao;
 import torn.ando.gpizzasb.gpizza.entity.Order;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class OrderService {
@@ -13,5 +15,9 @@ public class OrderService {
 
     public Order findByReference(String reference){
         return orderDao.findByReference(reference);
+    }
+
+    public List<Order> createOrder(List<Order> orders){
+        return orderDao.saveAll(orders);
     }
 }

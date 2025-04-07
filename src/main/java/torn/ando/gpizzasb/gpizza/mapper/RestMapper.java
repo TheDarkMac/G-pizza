@@ -3,9 +3,11 @@ package torn.ando.gpizzasb.gpizza.mapper;
 import org.springframework.stereotype.Component;
 import torn.ando.gpizzasb.gpizza.entity.Ingredient;
 import torn.ando.gpizzasb.gpizza.entity.IngredientPrice;
+import torn.ando.gpizzasb.gpizza.entity.OrderDish;
 import torn.ando.gpizzasb.gpizza.entity.Stock;
 import torn.ando.gpizzasb.gpizza.entityRest.IngredientPriceRest;
 import torn.ando.gpizzasb.gpizza.entityRest.IngredientRest;
+import torn.ando.gpizzasb.gpizza.entityRest.OrderDishRest;
 import torn.ando.gpizzasb.gpizza.entityRest.StockRest;
 
 @Component
@@ -41,5 +43,18 @@ public class RestMapper {
         stock.setQuantityINOUT(stockRest.getQuantityINOUT());
         stock.setDateOfMovement(stockRest.getDateOfMovement());
         return stock;
+    }
+
+    public OrderDish mapToOrderDish(Rest rest){
+        OrderDishRest orderDishRest = (OrderDishRest) rest;
+        OrderDish orderDish = new OrderDish();
+        if(orderDishRest.getId()!=null){
+            orderDish.setId(orderDishRest.getId());
+        }
+        orderDish.setDish(orderDishRest.getDish());
+        orderDish.setOrder(orderDishRest.getOrder());
+        orderDish.setQuantity(orderDishRest.getQuantity());
+
+        return orderDish;
     }
 }
