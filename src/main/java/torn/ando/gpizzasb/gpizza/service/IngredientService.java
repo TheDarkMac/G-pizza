@@ -11,7 +11,6 @@ import torn.ando.gpizzasb.gpizza.mapper.RestMapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -22,23 +21,28 @@ public class IngredientService {
     private RestMapper restMapper;
 
     public List<Ingredient> saveAll(List<IngredientRest> ingredientRests) {
-        List<Ingredient> ingredients = (List<Ingredient>) ingredientRests
-                .stream()
-                .map(restMapper::mapToIngredient).toList();
-        List<IngredientPrice> ingredientPriceList = ingredientRests
-                .stream()
-                .map(restMapper::mapToIngredientPrice)
-                .toList();
-        ingredientPriceDAO.saveAll(ingredientPriceList);
+        List<Ingredient> ingredients = new ArrayList<>();
+        List<IngredientPrice> ingredientPrices = new ArrayList<>();
+        ingredientRests.forEach(ingredientRest -> {
+            Ingredient ingredient = new Ingredient();
+            ingredient.setId(ingredientRest.getId());
+            ingredient.setName(ingredientRest.getName());
+            IngredientPrice ingredientPrice = new IngredientPrice();
+            ingredientPrice.setIngredient(ingredient);
+            ingredientPrice.setDateValue(ingredientRest.getUpdatedAt());
+            ingredientPrice.setPrice(ingredientRest.getUnitPrice());
+            ingredientPrices.add(ingredientPrice);
+            ingredients.add(ingredient);
+        });
         ingredientDAO.saveAll(ingredients);
 
-        List<Ingredient> savedIngredients = new ArrayList<>();
-        ingredients.forEach(ingredient -> {
-            Ingredient savedIngredient = ingredientDAO.findById(ingredient.getId());
-            savedIngredients.add(savedIngredient);
-        });
-
-        return savedIngredients;
+        ingredientPriceDAO.saveAll(ingredientPrices);
+        List<Ingredient> ingredientListResult = ingredientRests.stream()
+                .map(ingredientRest -> {
+                    Ingredient ingredient = ingredientDAO.findById(ingredientRest.getId());
+                    return ingredient;
+                }).toList();
+        return ingredientListResult;
     }
 
     public Ingredient findById(long id) {

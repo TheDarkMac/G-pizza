@@ -17,4 +17,13 @@ public class Dish {
     private double price;
     private List<DishIngredient> dishIngredientList;
 
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", dishIngredientList=" + dishIngredientList +
+                '}';
+    }
 }

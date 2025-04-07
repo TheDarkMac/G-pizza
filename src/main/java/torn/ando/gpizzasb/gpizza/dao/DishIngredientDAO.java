@@ -9,6 +9,7 @@ import torn.ando.gpizzasb.gpizza.entity.Ingredient;
 import org.springframework.stereotype.Repository;
 import torn.ando.gpizzasb.gpizza.enums.Unit;
 
+import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,30 +27,16 @@ public class DishIngredientDAO implements DAOSchema{
         List<DishIngredient> dishIngredients = (List<DishIngredient>) object;
         dishIngredients.forEach(dishIngredient -> {
             CriteriaINSERT criteriaINSERT = new CriteriaINSERT("dish_ingredient");
-            criteriaINSERT.insert("id_dish_ingredient","id_dish","id_ingredient","quantity","unit")
-                    .values("?","?","?","?","?")
-                    .onConflict("id_dish_ingredient")
-                    .doUpdate("id_dish",dishIngredient.getDish().getId())
-                    .doUpdate("id_ingredient",dishIngredient.getIngredient().getId())
-                    .doUpdate("quantity",dishIngredient.getRequiredQuantity())
-                    .doUpdate("unit",dishIngredient.getUnit())
-                    .returning("id_dish_ingredient","id_dish","id_ingredient","quantity","unit");
-
+            criteriaINSERT.insert("id_dish","id_ingredient","quantity","unit")
+                    .values("?","?","?","?")
+                    .returning("id_dish","id_ingredient","quantity","unit");
             String query = criteriaINSERT.build();
             try(Connection connection = dataSource.getConnection()){
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setLong(2,dishIngredient.getDish().getId());
-                preparedStatement.setLong(3, dishIngredient.getIngredient().getId());
-                preparedStatement.setDouble(4,dishIngredient.getRequiredQuantity());
-
-                // en cas de conflit, on fait une mise a jour
-                preparedStatement.setLong(5,dishIngredient.getDish().getId());
-                preparedStatement.setLong(6, dishIngredient.getIngredient().getId());
-                preparedStatement.setDouble(7,dishIngredient.getRequiredQuantity());
-                preparedStatement.setString(8, String.valueOf(dishIngredient.getUnit()));
-
-
-                System.out.println(preparedStatement);
+                preparedStatement.setLong(1,dishIngredient.getDish().getId());
+                preparedStatement.setLong(2, dishIngredient.getIngredient().getId());
+                preparedStatement.setDouble(3,dishIngredient.getRequiredQuantity());
+                preparedStatement.setObject(4,dishIngredient.getUnit(), Types.OTHER);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     DishIngredient dishIngredient1 = mapFromResultSet(resultSet);
@@ -59,26 +46,22 @@ public class DishIngredientDAO implements DAOSchema{
             } catch (RuntimeException | SQLException e) {
                 throw new RuntimeException(e);
             }
-
         });
         return (List<T>) dishIngredientList;
     }
 
     @Override
     public <T> List<T> findAll() {
-
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     public <T> T findById(double id) {
-
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     public <T> T deleteById(double id) {
-
         throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -89,7 +72,7 @@ public class DishIngredientDAO implements DAOSchema{
 
     @Override
     public <T> List<T> updateAll(List<T> object) {
-        return List.of();
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     public List<DishIngredient> findByIdDish(long id) {
@@ -114,7 +97,6 @@ public class DishIngredientDAO implements DAOSchema{
     }
 
     public DishIngredient mapFromResultSet(ResultSet resultSet) throws SQLException {
-
         Ingredient ingredient = ingredientDAO.findById(resultSet.getLong("id_ingredient"));
         DishIngredient dishIngredient = new DishIngredient();
         dishIngredient.setIngredient(ingredient);

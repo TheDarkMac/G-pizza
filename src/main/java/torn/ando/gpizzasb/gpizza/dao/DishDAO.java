@@ -19,7 +19,7 @@ public class DishDAO implements DAOSchema{
 
     @Override
     public <T> List<T> saveAll(List<T> object) {
-        return List.of();
+        throw new UnsupportedOperationException("not support yet");
     }
 
     @Override
@@ -43,7 +43,7 @@ public class DishDAO implements DAOSchema{
 
     @Override
     public <T> T findById(double id) {
-        Dish dish = null;
+        Dish dish = new Dish();
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("dish");
         criteriaSELECT.select("id_dish","name","unit_price" //about dish
         );
@@ -65,17 +65,19 @@ public class DishDAO implements DAOSchema{
 
     @Override
     public <T> T deleteById(double id) {
-        return null;
+        throw new UnsupportedOperationException("not yet supported");
     }
 
     @Override
     public <T> List<T> deleteAll(List<T> list) {
-        return List.of();
+
+        throw new UnsupportedOperationException("not yet supported");
     }
 
     @Override
     public <T> List<T> updateAll(List<T> object) {
-        return List.of();
+
+        throw new UnsupportedOperationException("not yet supported");
     }
 
     public Dish mapFromResultSet(ResultSet resultSet) throws SQLException {
@@ -84,7 +86,9 @@ public class DishDAO implements DAOSchema{
         dish.setId(resultSet.getLong("id_dish"));
         dish.setName(resultSet.getString("name"));
         dish.setPrice(resultSet.getDouble("unit_price"));
-        dish.setDishIngredientList(dishIngredient);
+        if (dishIngredient != null) {
+            dish.setDishIngredientList(dishIngredient);
+        }
         return dish;
     }
 }
