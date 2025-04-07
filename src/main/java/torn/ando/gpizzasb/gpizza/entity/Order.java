@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -18,4 +19,5 @@ public class Order {
     private String reference;
     private List<OrderDish> orderDishList;
     private List<OrderStatusType> orderStatusList;
+    private LocalDateTime orderDate;
 }

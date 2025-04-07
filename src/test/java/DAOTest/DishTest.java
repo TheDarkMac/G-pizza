@@ -1,6 +1,5 @@
 package DAOTest;
 
-import lombok.AllArgsConstructor;
 import torn.ando.gpizzasb.gpizza.dao.OrderDishDAO;
 import torn.ando.gpizzasb.gpizza.entity.OrderDish;
 import org.junit.Test;
