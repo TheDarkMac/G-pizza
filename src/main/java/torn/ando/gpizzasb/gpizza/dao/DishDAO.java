@@ -7,10 +7,8 @@ import torn.ando.gpizzasb.gpizza.entity.Dish;
 import torn.ando.gpizzasb.gpizza.entity.DishIngredient;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -26,7 +24,21 @@ public class DishDAO implements DAOSchema{
 
     @Override
     public <T> List<T> findAll() {
-        return List.of();
+        List<Dish> dishList = new ArrayList<>();
+        CriteriaSELECT criteriaSELECT =  new CriteriaSELECT("dish");
+        criteriaSELECT.select("id_dish","name","unit_price");
+        String query = criteriaSELECT.build();
+        try (Connection connection = dataSource.getConnection()){
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Dish dish = mapFromResultSet(resultSet);
+                dishList.add(dish);
+            }
+        }catch (SQLException | RuntimeException e){
+            throw new RuntimeException(e);
+        }
+        return (List<T>) dishList;
     }
 
     @Override

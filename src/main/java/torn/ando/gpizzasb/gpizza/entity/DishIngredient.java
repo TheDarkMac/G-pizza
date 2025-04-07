@@ -4,23 +4,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import torn.ando.gpizzasb.gpizza.enums.Unit;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Component
 public class DishIngredient {
-    private long id;
     private Dish dish;
     private Ingredient ingredient;
+    private Unit unit;
     private double requiredQuantity;
-
-    @Override
-    public String toString() {
-        return "DishIngredient{" +
-                "id=" + id +
-                ", ingredient=" + ingredient +
-                ", requiredQuantity=" + requiredQuantity +
-                '}';
-    }
 }

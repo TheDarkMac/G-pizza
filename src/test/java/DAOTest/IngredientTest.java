@@ -22,7 +22,6 @@ public class IngredientTest {
         Ingredient ingredient = new Ingredient();
         ingredient.setId(20);
         ingredient.setName("voanjo");
-        ingredient.setUnit(Unit.G);
 
         List<Ingredient> i = ingredientDAO.saveAll(List.of(ingredient));
         System.out.println(i);

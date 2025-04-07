@@ -22,4 +22,8 @@ public class IngredientPriceService {
     public IngredientPrice getById(Long id, Long idIngredient){
         return ingredientPriceDAO.findById(id, idIngredient);
     }
+
+    public List<IngredientPrice> create(IngredientPrice ingredientPrice){
+        return ingredientPriceDAO.saveAll(List.of(ingredientPrice));
+    }
 }

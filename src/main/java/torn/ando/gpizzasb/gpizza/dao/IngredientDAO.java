@@ -29,23 +29,16 @@ public class IngredientDAO implements DAOSchema{
         List<Ingredient> ingredients = new ArrayList<>();
         ingredientList.forEach(ingredient -> {
             CriteriaINSERT criteriaINSERT = new CriteriaINSERT("ingredient");
-            criteriaINSERT.insert("id_ingredient", "name", "unit")
-                    .values("?", "?", "?")
+            criteriaINSERT.insert("id_ingredient", "name")
+                    .values("?", "?")
                     .onConflict("id_ingredient")
-                    .doUpdate("name", ingredient.getName())
-                    .doUpdate("unit", ingredient.getUnit())
-                    .returning("id_ingredient", "name", "unit");
+                    .returning("id_ingredient", "name");
 
             String query = criteriaINSERT.build();
             try (Connection connection = dataSource.getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setLong(1, ingredient.getId());
                 preparedStatement.setString(2, ingredient.getName());
-                preparedStatement.setObject(3, ingredient.getUnit(), Types.OTHER);
-
-                // Les paramètres de mise à jour doivent venir après les 3 premiers
-                preparedStatement.setString(4, ingredient.getName());  // Name à mettre à jour
-                preparedStatement.setObject(5, ingredient.getUnit(), Types.OTHER);  // Unit à mettre à jour
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
@@ -64,7 +57,7 @@ public class IngredientDAO implements DAOSchema{
 
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("ingredient");
         criteriaSELECT.select(
-                "ingredient.id_ingredient", "name", "unit", //about ingredient
+                "ingredient.id_ingredient", "name", //about ingredient
                 "available_quantity" //about available_quantity
         );
         criteriaSELECT.join("LEFT",
@@ -91,18 +84,11 @@ public class IngredientDAO implements DAOSchema{
     public <T> T findById(double id) {
         Ingredient ingredient = null;
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("ingredient");
-        criteriaSELECT.select(
-                "ingredient.id_ingredient", "name", "unit", //about ingredient
-                "id_price", "date_price" , "unit_price",//about price
-                "id_stock","quantity","date_of_movement","movement_type", //about stock
-                "available_quantity" //about available_quantity
+
+        criteriaSELECT.select("ingredient.id_ingredient", "name", //about ingredient
+                "available_quantity"
         );
-        criteriaSELECT.join("LEFT",
-                "ingredient_price_history",
-                "ingredient.id_ingredient = ingredient_price_history.id_ingredient");
-        criteriaSELECT.join("LEFT",
-                "stock",
-                "ingredient.id_ingredient = stock.id_ingredient");
+
         criteriaSELECT.join("LEFT",
                 "available_quantity",
                 "ingredient.id_ingredient = available_quantity.id_ingredient");
@@ -145,7 +131,6 @@ public class IngredientDAO implements DAOSchema{
             try (Connection connection = dataSource.getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setString(1, ingredient.getName());
-                preparedStatement.setObject(2,ingredient.getUnit(),Types.OTHER);
                 preparedStatement.setDouble(3, ingredient.getId());
                 preparedStatement.executeUpdate();
 
@@ -160,7 +145,6 @@ public class IngredientDAO implements DAOSchema{
         Ingredient ingredient = new Ingredient();
         ingredient.setId(rs.getLong("id_ingredient"));
         ingredient.setName(rs.getString("name"));
-        ingredient.setUnit(Unit.valueOf(rs.getString("unit")));
 
         List<IngredientPrice> ingredientPriceList = ingredientPriceDAO.findByIdIngredient(rs.getLong("id_ingredient"));
 
@@ -177,7 +161,6 @@ public class IngredientDAO implements DAOSchema{
         } catch (SQLException e) {
             // Log or handle if the column doesn't exist
         }
-
         return ingredient;
     }
 

@@ -16,7 +16,6 @@ import java.util.List;
 public class Ingredient {
     private long id;
     private String name;
-    private Unit unit;
     private List<IngredientPrice> prices;
     private List<Stock> stockList;
     private Double availableQuantity;
@@ -26,7 +25,6 @@ public class Ingredient {
         return "Ingredient{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", unit=" + unit +
                 ", prices=" + prices +
                 ", stockList=" + stockList +
                 '}';

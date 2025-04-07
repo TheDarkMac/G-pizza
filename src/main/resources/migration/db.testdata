@@ -1,8 +1,8 @@
-INSERT INTO ingredient(name, unit)
-VALUES ('Saucisse', 'G'),
-       ('Huile', 'L'),
-       ('Oeuf', 'U'),
-       ('Pain', 'U');
+INSERT INTO ingredient(name)
+VALUES ('Saucisse'),
+       ('Huile'),
+       ('Oeuf'),
+       ('Pain');
 
 INSERT INTO ingredient_price_history(id_ingredient, date_price, unit_price)
 VALUES (1, '2025-01-01', 20),
@@ -20,7 +20,7 @@ VALUES (1, 1, 100, 'G'),
        (1, 4, 1, 'U');
 
 INSERT INTO stock(id_ingredient, quantity, date_of_movement, movement_type)
-VALUES(3,100,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in'),
-      (4,10,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in'),
-      (1,10000,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in'),
-      (2,20,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'in');
+VALUES(3,100,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
+      (4,10,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
+      (1,10000,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN'),
+      (2,20,TO_TIMESTAMP('2025-2-1 08:00:00','YYYY-MM-DD HH24:MI:SS'),'IN');

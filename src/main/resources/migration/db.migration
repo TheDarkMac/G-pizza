@@ -37,14 +37,11 @@ CREATE TYPE unit AS ENUM('G','L','U');
 
 CREATE TABLE ingredient(
     id_ingredient BIGSERIAL PRIMARY KEY,
-    reference_ingredeint varchar(150) UNIQUE,
-    name VARCHAR(50) NOT NULL UNIQUE,
-    unit unit NOT NULL
+    name VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE ingredient_price_history(
     id_price BIGSERIAL PRIMARY KEY,
-    reference_ingredient_price_history varchar(150) UNIQUE,
     id_ingredient BIGINT NOT NULL,
     date_price DATE NOT NULL DEFAULT CURRENT_DATE,
     unit_price DECIMAL(10,2) NOT NULL,
@@ -61,7 +58,6 @@ CREATE TABLE dish(
 
 CREATE TABLE dish_ingredient(
     id_dish BIGINT,
-    reference_dish_ingredient varchar(150) UNIQUE,
     id_ingredient BIGINT,
     quantity DECIMAL(10,2) NOT NULL,
     unit unit NOT NULL,
@@ -74,7 +70,6 @@ CREATE TYPE movement_type AS ENUM('IN','OUT');
 
 CREATE TABLE stock(
     id_stock BIGSERIAL PRIMARY KEY,
-    reference_stock varchar(150) UNIQUE,
     id_ingredient BIGINT,
     quantity DECIMAL(10,2),
     date_of_movement TIMESTAMP DEFAULT NOW(),
@@ -84,7 +79,6 @@ CREATE TABLE stock(
 
 CREATE TABLE available_quantity(
     id_ingredient BIGSERIAL PRIMARY KEY,
-    reference_available_quantity varchar(150) UNIQUE,
     available_quantity DECIMAL(10,2),
     date_of_last_movement TIMESTAMP,
     CONSTRAINT pk_available_quantity FOREIGN KEY (id_ingredient) REFERENCES ingredient(id_ingredient) ON DELETE CASCADE

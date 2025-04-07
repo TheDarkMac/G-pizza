@@ -3,26 +3,30 @@ package torn.ando.gpizzasb.gpizza.controller;
 import lombok.AllArgsConstructor;
 import torn.ando.gpizzasb.gpizza.entity.Ingredient;
 import torn.ando.gpizzasb.gpizza.entity.IngredientPrice;
+import torn.ando.gpizzasb.gpizza.entity.Stock;
 import torn.ando.gpizzasb.gpizza.entityRest.IngredientPriceRest;
 import torn.ando.gpizzasb.gpizza.entityRest.IngredientRest;
+import torn.ando.gpizzasb.gpizza.entityRest.StockRest;
+import torn.ando.gpizzasb.gpizza.mapper.RestMapper;
 import torn.ando.gpizzasb.gpizza.service.IngredientPriceService;
 import torn.ando.gpizzasb.gpizza.service.IngredientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import torn.ando.gpizzasb.gpizza.service.StockService;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/ingredients")
+@AllArgsConstructor
 public class IngredientController {
 
+    private final StockService stockService;
     private IngredientService ingredientService;
     private IngredientPriceService ingredientPriceService;
-
-    public IngredientController(IngredientService ingredientService,IngredientPriceService ingredientPriceService) {
-        this.ingredientService = ingredientService;
-        this.ingredientPriceService = ingredientPriceService;
-    }
+    private RestMapper restMapper;
 
     @GetMapping
     public ResponseEntity<List<Ingredient>> getAll(){
@@ -61,18 +65,31 @@ public class IngredientController {
     }
 
     @PutMapping("{id}/prices")
-    public ResponseEntity<Ingredient> createPrice(@RequestBody IngredientPriceRest ingredientPriceRest){
-        throw new UnsupportedOperationException("not support yet");
+    public ResponseEntity<Ingredient> createPrice(@PathVariable("id") Long id,@RequestBody IngredientPriceRest ingredientPriceRest){
+        System.out.println(ingredientPriceRest);
+        IngredientPrice ingredientPrice = restMapper.mapToIngredientPrice(ingredientPriceRest);
+        Ingredient ingredient = ingredientService.findById(id);
+        ingredientPrice.setIngredient(ingredient);
+        ingredientPriceService.create(ingredientPrice);
+        Ingredient updateIngredient = ingredientService.findById(id);
+
+        return ResponseEntity.ok(updateIngredient);
     }
 
-    @GetMapping("{id}/prices/{idPrice}")
-    public ResponseEntity<Object> getPriceById(@PathVariable("id") Long id, @PathVariable("idPrice") Long idPrice){
-        IngredientPrice ingredientPrice = ingredientPriceService.getById(idPrice,id);
-        if(ingredientPrice == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ingredientPrice);
+    @PutMapping("{id}/stockMovements")
+    public ResponseEntity<Ingredient> addStockMovements(@PathVariable("id") Long id, @RequestBody List<StockRest> stockListRest){
+        Ingredient ingredient = ingredientService.findById(id);
+        if(ingredient == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(ingredientPrice);
+        List<StockRest> stockRestWithIngredient = stockListRest.stream().map(
+                stockRest -> {
+                    StockRest sr = stockRest;
+                    sr.setIngredient(ingredient);
+                    return sr;
+                }).toList();
+        stockService.saveAll(stockRestWithIngredient);
+        Ingredient updatedIngredient = ingredientService.findById(id);
+        return ResponseEntity.ok(updatedIngredient);
     }
-
-
 }

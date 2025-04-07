@@ -1,5 +1,5 @@
 package torn.ando.gpizzasb.gpizza.entityRest;
 
 public class DishIngredientRest {
-    pub
+
 }
