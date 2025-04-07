@@ -1,5 +1,6 @@
 -- \c postgres
 
+<<<<<<< HEAD
 -- CREATE ROLE fako WITH ENCRYPTED PASSWORD 'fako' LOGIN CREATEDB;
 
 -- ceci n'est qu un racourci mais pour plus de verbalite, on cree et on reattribut le proprietaire
@@ -7,6 +8,15 @@
 
 -- CREATE DATABASE fako;
 -- ALTER DATABASE fako OWNER TO fako;
+=======
+-- CREATE ROLE gpizza WITH ENCRYPTED PASSWORD 'gpizza' LOGIN CREATEDB;
+
+-- ceci n'est qu un racourci mais pour plus de verbalite, on cree et on reattribut le proprietaire
+-- CREATE -h localhost -U gpizza gpizza
+
+-- CREATE DATABASE gpizza;
+-- ALTER DATABASE gpizza OWNER TO gpizza;
+>>>>>>> 6396783 (chore: change the project to a spring boot project)
 
 DROP TABLE IF EXISTS dish_ingredient CASCADE;
 DROP TABLE IF EXISTS dish CASCADE;
