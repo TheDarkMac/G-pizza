@@ -33,7 +33,6 @@ public class OrderDao implements DAOSchema{
                     .onConflict("reference_order")
                     .doUpdate("datetime_of_order","?")
                     .returning("id_order","reference_order","datetime_of_order");
-
             String query = criteriaINSERT.build();
             try(Connection connection = dataSource.getConnection()){
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -116,7 +115,8 @@ public class OrderDao implements DAOSchema{
 
     public Order mapFromResultSet(ResultSet resultSet) throws SQLException {
         Order order = new Order();
-        List<OrderStatus> orderStatusList = orderStatusDAO.findOrderStatusByOrderReference(resultSet.getString("reference_order"));
+        List<OrderStatus> orderStatusList = orderStatusDAO
+                .findOrderStatusByOrderReference(resultSet.getString("reference_order"));
         if(!orderStatusList.isEmpty()){
             order.setOrderStatusList(orderStatusList);
         }else{

@@ -103,6 +103,33 @@ public class OrderDishDAO implements DAOSchema{
         return orderDishList;
     }
 
+    public OrderDish findByReferenceAndDishId(String reference,Long dishId) {
+
+        CriteriaSELECT criteriaSELECT = new CriteriaSELECT("dish_order");
+        criteriaSELECT
+                .select(
+                        "id_dish","reference_order","quantity"
+                )
+                .and("reference_order")
+                .and("id_dish")
+        ;
+
+        String query = criteriaSELECT.build();
+        try(Connection connection = new DataSource().getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, reference);
+            preparedStatement.setLong(2, dishId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                return mapFromResultSet(resultSet);
+            }
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+
     public OrderDish mapFromResultSet(ResultSet resultSet) throws SQLException {
         OrderDish orderDish = new OrderDish();
         List<OrderDishStatus> orderDishStatusList = orderDishStatusDAO.findByReferenceAndDishId(resultSet.getString("reference_order"), resultSet.getLong("id_dish"));

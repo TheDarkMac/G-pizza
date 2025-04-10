@@ -23,7 +23,7 @@ public class OrderStatusDAO {
     public List<OrderStatus> findOrderStatusByOrderReference(String referenceOrder){
         List<OrderStatus> orderStatusList = new ArrayList<>();
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("order_status");
-        criteriaSELECT.select("id_dish","reference_order","order_status","datetime")
+        criteriaSELECT.select("reference_order","order_status","datetime")
                 .and("reference_order");
         String query = criteriaSELECT.build();
 
@@ -47,18 +47,17 @@ public class OrderStatusDAO {
         o.forEach(orderStatus->{
             OrderStatus newOrderStatus = null;
             CriteriaINSERT criteriaINSERT = new CriteriaINSERT("order_status");
-            criteriaINSERT.insert("id_dish","reference_order","order_status","datetime")
-                    .values("?","?","?","?")
-                    .onConflict("id_dish","order_status","reference_order")
-                    .returning("id_dish","reference_order","order_status","datetime");
+            criteriaINSERT.insert("reference_order","order_status","datetime")
+                    .values("?","?","?")
+                    .onConflict("order_status","reference_order")
+                    .returning("reference_order","order_status","datetime");
             String query = criteriaINSERT.build();
 
             try(Connection connection = dataSource.getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setObject(1,orderStatus.getDish().getId(),Types.OTHER);
-                preparedStatement.setObject(2,orderStatus.getReferenceOrder(), Types.OTHER);
-                preparedStatement.setObject(3,orderStatus.getOrderStatus(), Types.OTHER);
-                preparedStatement.setObject(4,orderStatus.getDatetime(), Types.OTHER);
+                preparedStatement.setObject(1,orderStatus.getReferenceOrder(), Types.OTHER);
+                preparedStatement.setObject(2,orderStatus.getOrderStatus(), Types.OTHER);
+                preparedStatement.setObject(3,orderStatus.getDatetime(), Types.OTHER);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()){
                     newOrderStatus = mapFromResultSet(resultSet);
@@ -73,7 +72,6 @@ public class OrderStatusDAO {
 
     public OrderStatus mapFromResultSet(ResultSet rs) throws SQLException {
         OrderStatus orderStatus = new OrderStatus();
-        orderStatus.setDish(dishDAO.findById(rs.getLong("id_dish")));
         orderStatus.setReferenceOrder(rs.getString("reference_order"));
         orderStatus.setOrderStatus(OrderStatusType.valueOf(rs.getString("order_status")));
         orderStatus.setDatetime(rs.getObject("datetime", LocalDateTime.class));

@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 public class DishIngredientService {
 
     private DishIngredientDAO dishIngredientDAO;
-
-
     private RestMapper restMapper;
 
     public List<DishIngredient> saveAll(List<DishIngredientRest> dishIngredientRestList){

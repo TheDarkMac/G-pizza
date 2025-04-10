@@ -4,46 +4,46 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import torn.ando.gpizzasb.gpizza.dao.DishDAO;
+import torn.ando.gpizzasb.gpizza.dao.OrderDao;
+import torn.ando.gpizzasb.gpizza.dao.OrderDishDAO;
 import torn.ando.gpizzasb.gpizza.entity.*;
-import torn.ando.gpizzasb.gpizza.entityRest.IngredientPriceRest;
-import torn.ando.gpizzasb.gpizza.entityRest.IngredientRest;
-import torn.ando.gpizzasb.gpizza.entityRest.OrderDishRest;
-import torn.ando.gpizzasb.gpizza.entityRest.StockRest;
+import torn.ando.gpizzasb.gpizza.entityRest.*;
+import torn.ando.gpizzasb.gpizza.enums.OrderStatusType;
 
 @AllArgsConstructor
 @Service
 public class RestMapper {
 
     private DishDAO dishDAO;
-    public Ingredient mapToIngredient(Rest rest) {
-        IngredientRest ingredientRest = (IngredientRest) rest;
+    private OrderDishDAO orderDishDAO;
+    private OrderDao orderDao;
+
+    public Ingredient mapToIngredient(IngredientRest rest) {
         Ingredient ingredient = new Ingredient();
-        ingredient.setId(ingredientRest.getId());
-        ingredient.setName(ingredientRest.getName());
+        ingredient.setId(rest.getId());
+        ingredient.setName(rest.getName());
         return ingredient;
     }
 
-    public IngredientPrice mapToIngredientPrice(Rest rest) {
-        IngredientPriceRest ingredientPriceRest = (IngredientPriceRest) rest;
+    public IngredientPrice mapToIngredientPrice(IngredientPriceRest rest) {
         IngredientPrice ingredientPrice = new IngredientPrice();
-        ingredientPrice.setPrice(ingredientPriceRest.getPrice());
-        ingredientPrice.setDateValue(ingredientPriceRest.getDateValue());
+        ingredientPrice.setPrice(rest.getPrice());
+        ingredientPrice.setDateValue(rest.getDateValue());
         ingredientPrice.setIngredient(ingredientPrice.getIngredient());
         return ingredientPrice;
     }
 
-    public Stock mapToStock(Rest rest) {
-        StockRest stockRest = (StockRest) rest;
+    public Stock mapToStock(StockRest rest) {
         Stock stock = new Stock();
-        if(stockRest.getId() != null) {
-            stock.setId(stockRest.getId());
+        if(rest.getId() != null) {
+            stock.setId(rest.getId());
         }
-        if(stockRest.getIngredient() != null) {
-            stock.setIngredient(stockRest.getIngredient());
+        if(rest.getIngredient() != null) {
+            stock.setIngredient(rest.getIngredient());
         }
-        stock.setMovementType(stockRest.getMovementType());
-        stock.setQuantityINOUT(stockRest.getQuantityINOUT());
-        stock.setDateOfMovement(stockRest.getDateOfMovement());
+        stock.setMovementType(rest.getMovementType());
+        stock.setQuantityINOUT(rest.getQuantityINOUT());
+        stock.setDateOfMovement(rest.getDateOfMovement());
         return stock;
     }
 
@@ -53,7 +53,59 @@ public class RestMapper {
         orderDish.setDish(dish);
         orderDish.setOrder(rest.getOrder());
         orderDish.setQuantity(rest.getQuantity());
-
         return orderDish;
+    }
+
+    public OrderDishStatus mapToOrderDishStatus(OrderDishStatusRest rest){
+        OrderDishStatus orderDishStatus = new OrderDishStatus();
+        orderDishStatus.setOrderStatus(rest.getOrderStatus());
+        Order order = orderDao.findByReference(rest.getOrderReference());
+        OrderDish orderDish = orderDishDAO.findByReferenceAndDishId(rest.getOrderReference(),rest.getDishId());
+        orderDish.setOrder(order);
+        orderDishStatus.setOrderDish(orderDish);
+        orderDishStatus.setUpdateAt(rest.getUpdatedAt());
+        return orderDishStatus;
+    }
+
+    public Integer mapToInteger(OrderStatusType orderStatusType){
+        if(orderStatusType == OrderStatusType.CREATED) {
+            return 1;
+        }
+        else if(orderStatusType == OrderStatusType.CONFIRMED) {
+            return 2;
+        }
+        else if(orderStatusType == OrderStatusType.IN_PREPARATION) {
+            return 3;
+        }
+        else if(orderStatusType == OrderStatusType.DONE) {
+            return 4;
+        }
+        else if(orderStatusType == OrderStatusType.SERVED) {
+            return 5;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    public OrderStatusType mapToOrderStatusType(Integer orderStatusType){
+        if(orderStatusType == 1) {
+            return OrderStatusType.CREATED;
+        }
+        else if(orderStatusType == 2) {
+            return OrderStatusType.CONFIRMED;
+        }
+        else if(orderStatusType == 3) {
+            return OrderStatusType.IN_PREPARATION;
+        }
+        else if(orderStatusType == 4) {
+            return OrderStatusType.DONE;
+        }
+        else if(orderStatusType == 5) {
+            return OrderStatusType.SERVED;
+        }
+        else {
+            throw new IllegalArgumentException("Invalid orderStatusType: " + orderStatusType);
+        }
     }
 }

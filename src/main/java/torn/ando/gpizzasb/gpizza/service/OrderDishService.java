@@ -39,7 +39,6 @@ public class OrderDishService {
                 orderDishDAO.saveAll(order.getOrderDishList());
                 if(order.getOrderStatusList().isEmpty()){
                     OrderStatus orderStatus = new OrderStatus();
-                    orderStatus.setDish(orderDish.getDish());
                     orderStatus.setOrderStatus(OrderStatusType.CREATED);
                     orderStatus.setReferenceOrder(orderDish.getOrder().getReference());
                     orderStatus.setDatetime(LocalDateTime.now());
@@ -47,7 +46,6 @@ public class OrderDishService {
                 }else{
                     if(order.getActualStatus() == OrderStatusType.CREATED){
                         OrderStatus orderStatus = new OrderStatus();
-                        orderStatus.setDish(orderDish.getDish());
                         orderStatus.setOrderStatus(OrderStatusType.CONFIRMED);
                         orderStatus.setReferenceOrder(orderDish.getOrder().getReference());
                         orderStatus.setDatetime(LocalDateTime.now());
@@ -56,7 +54,7 @@ public class OrderDishService {
                 }
                 orderStatusDao.saveAll(order.getOrderStatusList());
             }
-            if(orderDish.getOrderStatusList()==null){
+            if(orderDish.getOrderStatusList() ==null || orderDish.getOrderStatusList().isEmpty()){
                 OrderDishStatus orderDishStatus = new OrderDishStatus();
                 orderDishStatus.setOrderDish(orderDish);
                 orderDishStatus.setOrderStatus(OrderStatusType.CREATED);

@@ -9,8 +9,13 @@ import torn.ando.gpizzasb.gpizza.dao.OrderStatusDAO;
 import torn.ando.gpizzasb.gpizza.entity.Order;
 import torn.ando.gpizzasb.gpizza.entity.OrderDish;
 import torn.ando.gpizzasb.gpizza.entity.OrderStatus;
+import torn.ando.gpizzasb.gpizza.mapper.RestMapper;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -20,6 +25,7 @@ public class OrderService {
     private OrderDao orderDao;
     private OrderStatusDAO orderStatusDao;
     private OrderDishStatusDAO orderDishStatusDAO;
+    private RestMapper restMapper;
 
     public Order findByReference(String reference){
         return orderDao.findByReference(reference);
@@ -45,5 +51,30 @@ public class OrderService {
 
     public void deleteOrderByReference(String reference){
         orderDao.deleteByReference(reference);
+    }
+
+    public void changeOrderStatus(String reference){
+        Order order = orderDao.findByReference(reference);
+        Integer orderActualStatus = restMapper.mapToInteger(order.getActualStatus());
+        Integer min = order.getOrderDishList()
+                .stream()
+                .map(OrderDish::getActualStatus)
+                .map(orderStatusType -> restMapper.mapToInteger(orderStatusType))
+                .min(Integer::compareTo)
+                .orElse(0);
+        if(orderActualStatus < min){
+            if(orderActualStatus + 1 == min){
+                System.out.println("Order status changed to " + orderActualStatus);
+                OrderStatus orderStatus = new OrderStatus();
+                orderStatus.setReferenceOrder(reference);
+                orderStatus.setOrderStatus(restMapper.mapToOrderStatusType(min));
+                orderStatus.setDatetime(LocalDateTime.now());
+                orderStatusDao.saveAll(List.of(orderStatus));
+            }else {
+                System.out.println("something strange in the air");
+            }
+        }else {
+            System.out.println("Order status didn't changed " + orderActualStatus);
+        }
     }
 }

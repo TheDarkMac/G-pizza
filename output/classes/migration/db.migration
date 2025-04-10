@@ -143,12 +143,10 @@ CREATE TABLE dish_order(
 );
 
 CREATE TABLE order_status(
-    id_dish BIGSERIAL,
     reference_order varchar(150),
     order_status "order_status_type",
     datetime TIMESTAMP DEFAULT now(),
-    PRIMARY KEY (id_dish, reference_order,order_status),
-    CONSTRAINT pk_order_status_id_dish FOREIGN KEY (id_dish) REFERENCES "dish"(id_dish),
+    PRIMARY KEY (reference_order,order_status),
     CONSTRAINT pk_order_status_reference_order FOREIGN KEY (reference_order) REFERENCES "order"(reference_order) ON DELETE CASCADE
 );
 

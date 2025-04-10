@@ -1,9 +1,11 @@
 package torn.ando.gpizzasb.gpizza.dao;
 
+import lombok.AllArgsConstructor;
 import torn.ando.gpizzasb.gpizza.criteria.CriteriaINSERT;
 import torn.ando.gpizzasb.gpizza.criteria.CriteriaSELECT;
 import torn.ando.gpizzasb.gpizza.dataSource.DataSource;
 import torn.ando.gpizzasb.gpizza.entity.Dish;
+import torn.ando.gpizzasb.gpizza.entity.OrderDish;
 import torn.ando.gpizzasb.gpizza.entity.OrderDishStatus;
 import torn.ando.gpizzasb.gpizza.enums.OrderStatusType;
 import org.springframework.stereotype.Repository;
@@ -12,22 +14,21 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 @Repository
 public class OrderDishStatusDAO implements DAOSchema{
     private final OrderDishStatus orderDishStatus;
     private final DishDAO dishDAO;
+
     DataSource dataSource = new DataSource();
 
-    public OrderDishStatusDAO(OrderDishStatus orderDishStatus, DishDAO dishDAO) {
-        this.orderDishStatus = orderDishStatus;
-        this.dishDAO = dishDAO;
-    }
 
     @Override
     public <T> List<T> saveAll(List<T> object) {
         List<OrderDishStatus> orderDishStatusList = new ArrayList<>();
         List<OrderDishStatus> o = (List<OrderDishStatus>) object;
         o.forEach(orderDishStatus -> {
+            System.out.println("into saveAll: "+ orderDishStatus);
             CriteriaINSERT criteriaINSERT = new CriteriaINSERT("order_dish_status");
             criteriaINSERT.insert("id_dish","reference_order","order_status","updated_at")
                     .values("?","?","?","?")
@@ -129,7 +130,6 @@ public class OrderDishStatusDAO implements DAOSchema{
 
     public OrderDishStatus mapFromResultSet(ResultSet resultSet) throws SQLException {
         OrderDishStatus orderDishStatus = new OrderDishStatus();
-        Dish dish = dishDAO.findById(resultSet.getLong("id_dish"));
         orderDishStatus.setOrderStatus(OrderStatusType.valueOf(resultSet.getString("order_status")));
         orderDishStatus.setUpdateAt(resultSet.getTimestamp("updated_at").toLocalDateTime());
         return orderDishStatus;
