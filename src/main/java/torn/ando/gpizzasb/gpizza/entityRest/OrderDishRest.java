@@ -17,7 +17,6 @@ import java.util.List;
 public class OrderDishRest implements Rest {
     private Long id;
     private Order order;
-    private Dish dish;
+    private String name;
     private Double quantity;
-    private List<OrderDishStatus> orderStatusList;
 }

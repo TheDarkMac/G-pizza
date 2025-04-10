@@ -3,24 +3,24 @@ package torn.ando.gpizzasb.gpizza.dao;
 import torn.ando.gpizzasb.gpizza.criteria.CriteriaINSERT;
 import torn.ando.gpizzasb.gpizza.criteria.CriteriaSELECT;
 import torn.ando.gpizzasb.gpizza.dataSource.DataSource;
+import torn.ando.gpizzasb.gpizza.entity.Dish;
 import torn.ando.gpizzasb.gpizza.entity.OrderDishStatus;
 import torn.ando.gpizzasb.gpizza.enums.OrderStatusType;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class OrderDishStatusDAO implements DAOSchema{
     private final OrderDishStatus orderDishStatus;
+    private final DishDAO dishDAO;
     DataSource dataSource = new DataSource();
 
-    public OrderDishStatusDAO(OrderDishStatus orderDishStatus) {
+    public OrderDishStatusDAO(OrderDishStatus orderDishStatus, DishDAO dishDAO) {
         this.orderDishStatus = orderDishStatus;
+        this.dishDAO = dishDAO;
     }
 
     @Override
@@ -29,14 +29,17 @@ public class OrderDishStatusDAO implements DAOSchema{
         List<OrderDishStatus> o = (List<OrderDishStatus>) object;
         o.forEach(orderDishStatus -> {
             CriteriaINSERT criteriaINSERT = new CriteriaINSERT("order_dish_status");
-            criteriaINSERT.insert("reference_order","order_status","reference_dish_order")
-                    .returning("id_order_dish_status","reference_order","order_status","reference_dish_order");
+            criteriaINSERT.insert("id_dish","reference_order","order_status","updated_at")
+                    .values("?","?","?","?")
+                    .onConflict("id_dish","reference_order","order_status")
+                    .returning("id_dish","reference_order","order_status","updated_at");
         String query = criteriaINSERT.build();
         try(Connection connection = dataSource.getConnection()){
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setString(1,"reference_order");
-                preparedStatement.setString(2,"order_status");
-                preparedStatement.setString(3,"reference_dish_order");
+                preparedStatement.setDouble(1, orderDishStatus.getOrderDish().getDish().getId());
+                preparedStatement.setString(2,orderDishStatus.getOrderDish().getOrder().getReference());
+                preparedStatement.setObject(3,orderDishStatus.getOrderStatus(),Types.OTHER);
+                preparedStatement.setTimestamp(4, Timestamp.valueOf(orderDishStatus.getUpdateAt()));
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while(resultSet.next()){
                     OrderDishStatus orderDishStatusL = mapFromResultSet(resultSet);
@@ -79,8 +82,8 @@ public class OrderDishStatusDAO implements DAOSchema{
 
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("order_dish_status");
         criteriaSELECT
-                .select("id_order_dish_status","reference_order","id_dish_order","order_dish_status","update_at")
-                .and("id_dish_order")
+                .select("id_dish","reference_order","order_status","updated_at")
+                .and("id_dish")
         ;
         String query = criteriaSELECT.build();
         try(Connection connection = dataSource.getConnection()){
@@ -98,11 +101,37 @@ public class OrderDishStatusDAO implements DAOSchema{
         return orderDishStatusList;
     }
 
+    public List<OrderDishStatus> findByReferenceAndDishId(String reference, long dishId) {
+        List<OrderDishStatus> orderDishStatusList = new ArrayList<>();
+
+        CriteriaSELECT criteriaSELECT = new CriteriaSELECT("order_dish_status");
+        criteriaSELECT
+                .select("id_dish","reference_order","order_status","updated_at")
+                .and("id_dish")
+                .and("reference_order")
+        ;
+        String query = criteriaSELECT.build();
+        try(Connection connection = dataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, dishId);
+            preparedStatement.setString(2, reference);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                OrderDishStatus orderDishStatus = mapFromResultSet(resultSet);
+                orderDishStatusList.add(orderDishStatus);
+            }
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return orderDishStatusList;
+    }
+
     public OrderDishStatus mapFromResultSet(ResultSet resultSet) throws SQLException {
         OrderDishStatus orderDishStatus = new OrderDishStatus();
-        orderDishStatus.setId(resultSet.getLong("id_order_dish_status"));
-        orderDishStatus.setOrderStatus(OrderStatusType.valueOf(resultSet.getString("order_dish_status")));
-        orderDishStatus.setUpdateAt(resultSet.getTimestamp("update_at").toLocalDateTime());
+        Dish dish = dishDAO.findById(resultSet.getLong("id_dish"));
+        orderDishStatus.setOrderStatus(OrderStatusType.valueOf(resultSet.getString("order_status")));
+        orderDishStatus.setUpdateAt(resultSet.getTimestamp("updated_at").toLocalDateTime());
         return orderDishStatus;
     }
 }

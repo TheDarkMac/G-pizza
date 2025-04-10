@@ -2,6 +2,7 @@ package torn.ando.gpizzasb.gpizza.dao;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+import torn.ando.gpizzasb.gpizza.criteria.CriteriaDELETE;
 import torn.ando.gpizzasb.gpizza.criteria.CriteriaINSERT;
 import torn.ando.gpizzasb.gpizza.criteria.CriteriaSELECT;
 import torn.ando.gpizzasb.gpizza.dataSource.DataSource;
@@ -29,6 +30,8 @@ public class OrderDao implements DAOSchema{
             CriteriaINSERT criteriaINSERT = new CriteriaINSERT("\"order\"");
             criteriaINSERT.insert("reference_order","datetime_of_order")
                     .values("?","?")
+                    .onConflict("reference_order")
+                    .doUpdate("datetime_of_order","?")
                     .returning("id_order","reference_order","datetime_of_order");
 
             String query = criteriaINSERT.build();
@@ -36,6 +39,10 @@ public class OrderDao implements DAOSchema{
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setString(1,order.getReference());
                 preparedStatement.setTimestamp(2, Timestamp.valueOf(order.getOrderDate()));
+
+                //if on conflict, make update
+                preparedStatement.setTimestamp(3, Timestamp.valueOf(order.getOrderDate()));
+
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while(resultSet.next()){
                     Order o = mapFromResultSet(resultSet);
@@ -75,6 +82,7 @@ public class OrderDao implements DAOSchema{
     }
 
     public Order findByReference(String reference){
+        Order order = null;
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("\"order\"");
         criteriaSELECT.select("id_order","reference_order","datetime_of_order")
                 .and("reference_order");
@@ -85,23 +93,40 @@ public class OrderDao implements DAOSchema{
             preparedStatement.setString(1, reference);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                return mapFromResultSet(resultSet);
+                order = mapFromResultSet(resultSet);
             }
         }catch (RuntimeException | SQLException e){
             throw new RuntimeException(e);
         }
-        return null;
+        return order;
+    }
+
+    public void deleteByReference(String reference){
+        CriteriaDELETE criteriaDELETE = new CriteriaDELETE("\"order\"");
+        criteriaDELETE.where("reference_order",reference);
+        String query = criteriaDELETE.build();
+        try(Connection connection = dataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, reference);
+            preparedStatement.executeUpdate();
+        } catch (SQLException | RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Order mapFromResultSet(ResultSet resultSet) throws SQLException {
         Order order = new Order();
-        List<OrderStatus> orderStatusList = orderStatusDAO.findOrderStatusByOrderReference("reference_order");
+        List<OrderStatus> orderStatusList = orderStatusDAO.findOrderStatusByOrderReference(resultSet.getString("reference_order"));
         if(!orderStatusList.isEmpty()){
             order.setOrderStatusList(orderStatusList);
+        }else{
+            order.setOrderStatusList(List.of());
         }
-        List<OrderDish> orderDishList = orderDishDAO.findByOrderReference("reference_order");
+        List<OrderDish> orderDishList = orderDishDAO.findByOrderReference(resultSet.getString("reference_order"));
         if(!orderDishList.isEmpty()){
             order.setOrderDishList(orderDishList);
+        }else{
+            order.setOrderDishList(List.of());
         }
         order.setId(resultSet.getLong("id_order"));
         order.setReference(resultSet.getString("reference_order"));

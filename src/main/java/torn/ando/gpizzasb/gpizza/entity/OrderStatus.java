@@ -12,8 +12,18 @@ import java.time.LocalDateTime;
 @Setter
 @Component
 public class OrderStatus {
-    private Long id_order_status;
+    private Dish dish;
     private String referenceOrder;
     private OrderStatusType orderStatus;
     private LocalDateTime datetime;
+
+    @Override
+    public String toString() {
+        return "OrderStatus{" +
+                "dish=" + dish +
+                ", referenceOrder='" + referenceOrder + '\'' +
+                ", orderStatus=" + orderStatus +
+                ", datetime=" + datetime +
+                '}';
+    }
 }

@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Component
 public class OrderDishStatus {
-    private long id;
     private OrderDish orderDish;
     private OrderStatusType orderStatus;
     private LocalDateTime updateAt;
@@ -21,7 +20,6 @@ public class OrderDishStatus {
     @Override
     public String toString() {
         return "OrderDishStatus{" +
-                "id=" + id +
                 ", orderDish=" + orderDish +
                 ", orderStatus=" + orderStatus +
                 ", updateAt=" + updateAt +

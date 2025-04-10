@@ -27,20 +27,20 @@ public class OrderDishDAO implements DAOSchema{
         List<OrderDish> orderDishList = (List<OrderDish>) object;
         orderDishList.forEach(orderDish -> {
             CriteriaINSERT criteriaINSERT = new CriteriaINSERT("dish_order");
-            criteriaINSERT.insert("reference_order","reference_dish_order","id_dish","quantity")
-                    .onConflict("id_dish")
+            criteriaINSERT.insert("reference_order","id_dish","quantity")
+                    .values("?","?","?")
+                    .onConflict("id_dish","reference_order")
                     .doUpdate("quantity",orderDish.getQuantity())
-                    .returning("id_dish_order","reference_order","reference_dish_order","id_dish");
+                    .returning("reference_order","id_dish","quantity");
             String query = criteriaINSERT.build();
             try(Connection connection = dataSource.getConnection()){
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setString(1,orderDish.getOrder().getReference());
-
-                preparedStatement.setDouble(3,orderDish.getDish().getId());
-                preparedStatement.setDouble(4,orderDish.getQuantity());
+                preparedStatement.setDouble(2,orderDish.getDish().getId());
+                preparedStatement.setDouble(3,orderDish.getQuantity());
 
                 // if need update
-                preparedStatement.setDouble(5,orderDish.getQuantity());
+                preparedStatement.setDouble(4,orderDish.getQuantity());
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while(resultSet.next()){
@@ -84,17 +84,14 @@ public class OrderDishDAO implements DAOSchema{
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("dish_order");
         criteriaSELECT
                 .select(
-                        "dish_order.id_dish_order","id_dish","dish_order.reference_order","number", //about dish_order
-                        "id_order_dish_status","order_dish_status","update_at" // order_dish_status
+                        "id_dish","reference_order","quantity"
                 )
-                .join("LEFT","order_dish_status","dish_order.reference_order = order_dish_status.reference_order")
-                .and("dish_order.reference_order");
+                .and("reference_order");
 
         String query = criteriaSELECT.build();
         try(Connection connection = new DataSource().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, reference);
-            System.out.println(preparedStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 OrderDish orderDish = mapFromResultSet(resultSet);
@@ -108,12 +105,13 @@ public class OrderDishDAO implements DAOSchema{
 
     public OrderDish mapFromResultSet(ResultSet resultSet) throws SQLException {
         OrderDish orderDish = new OrderDish();
-        List<OrderDishStatus> orderDishStatusList = orderDishStatusDAO.findByOrderDishId(resultSet.getLong("id_dish_order"));
-        orderDish.setId(resultSet.getLong("id_dish_order"));
+        List<OrderDishStatus> orderDishStatusList = orderDishStatusDAO.findByReferenceAndDishId(resultSet.getString("reference_order"), resultSet.getLong("id_dish"));
+        if(orderDishStatusList != null){
+            orderDish.setOrderStatusList(orderDishStatusList);
+        }
         Dish dish = dishDAO.findById(resultSet.getLong("id_dish"));
         orderDish.setDish(dish);
-        orderDish.setQuantity(resultSet.getDouble("number"));
-        orderDish.setOrderStatusList(orderDishStatusList);
+        orderDish.setQuantity(resultSet.getDouble("quantity"));
         return orderDish;
     }
 }

@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @Component
 public class OrderDish {
-    private long id;
     @JsonIgnore
     private Order order;
     private Dish dish;
@@ -25,7 +24,6 @@ public class OrderDish {
     @Override
     public String toString() {
         return "OrderDish{" +
-                "id=" + id +
                 ", dish=" + dish +
                 ", quantity=" + quantity +
                 ", orderStatusList=" + orderStatusList +
@@ -33,6 +31,9 @@ public class OrderDish {
     }
 
     public OrderStatusType getActualStatus(){
+        if (orderStatusList == null || orderStatusList.isEmpty()) {
+            return null;
+        }
         return orderStatusList.stream()
                 .max(Comparator.comparing(OrderDishStatus::getUpdateAt))
                 .map(OrderDishStatus::getOrderStatus)

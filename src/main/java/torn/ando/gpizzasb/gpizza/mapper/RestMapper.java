@@ -1,18 +1,20 @@
 package torn.ando.gpizzasb.gpizza.mapper;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import torn.ando.gpizzasb.gpizza.entity.Ingredient;
-import torn.ando.gpizzasb.gpizza.entity.IngredientPrice;
-import torn.ando.gpizzasb.gpizza.entity.OrderDish;
-import torn.ando.gpizzasb.gpizza.entity.Stock;
+import org.springframework.stereotype.Service;
+import torn.ando.gpizzasb.gpizza.dao.DishDAO;
+import torn.ando.gpizzasb.gpizza.entity.*;
 import torn.ando.gpizzasb.gpizza.entityRest.IngredientPriceRest;
 import torn.ando.gpizzasb.gpizza.entityRest.IngredientRest;
 import torn.ando.gpizzasb.gpizza.entityRest.OrderDishRest;
 import torn.ando.gpizzasb.gpizza.entityRest.StockRest;
 
-@Component
+@AllArgsConstructor
+@Service
 public class RestMapper {
 
+    private DishDAO dishDAO;
     public Ingredient mapToIngredient(Rest rest) {
         IngredientRest ingredientRest = (IngredientRest) rest;
         Ingredient ingredient = new Ingredient();
@@ -45,15 +47,12 @@ public class RestMapper {
         return stock;
     }
 
-    public OrderDish mapToOrderDish(Rest rest){
-        OrderDishRest orderDishRest = (OrderDishRest) rest;
+    public OrderDish mapToOrderDish(OrderDishRest rest){
         OrderDish orderDish = new OrderDish();
-        if(orderDishRest.getId()!=null){
-            orderDish.setId(orderDishRest.getId());
-        }
-        orderDish.setDish(orderDishRest.getDish());
-        orderDish.setOrder(orderDishRest.getOrder());
-        orderDish.setQuantity(orderDishRest.getQuantity());
+        Dish dish = dishDAO.findById(rest.getId());
+        orderDish.setDish(dish);
+        orderDish.setOrder(rest.getOrder());
+        orderDish.setQuantity(rest.getQuantity());
 
         return orderDish;
     }
