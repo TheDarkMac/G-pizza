@@ -1,5 +1,6 @@
 package torn.ando.gpizzasb.gpizza.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import torn.ando.gpizzasb.gpizza.enums.Unit;
 @NoArgsConstructor
 @Component
 public class DishIngredient {
+    @JsonIgnore
     private Dish dish;
     private Ingredient ingredient;
     private Unit unit;

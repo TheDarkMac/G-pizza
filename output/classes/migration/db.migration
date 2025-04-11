@@ -1,12 +1,5 @@
 -- \c postgres
 
--- CREATE ROLE fako WITH ENCRYPTED PASSWORD 'fako' LOGIN CREATEDB;
-
--- ceci n'est qu un racourci mais pour plus de verbalite, on cree et on reattribut le proprietaire
--- CREATE -h localhost -U fako fako
-
--- CREATE DATABASE fako;
--- ALTER DATABASE fako OWNER TO fako;
 -- CREATE ROLE gpizza WITH ENCRYPTED PASSWORD 'gpizza' LOGIN CREATEDB;
 
 -- ceci n'est qu un racourci mais pour plus de verbalite, on cree et on reattribut le proprietaire

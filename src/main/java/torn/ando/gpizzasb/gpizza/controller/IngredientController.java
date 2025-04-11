@@ -65,7 +65,7 @@ public class IngredientController {
     }
 
     @PutMapping("{id}/prices")
-    public ResponseEntity<Ingredient> createPrice(@PathVariable("id") Long id,@RequestBody IngredientPriceRest ingredientPriceRest){
+    public ResponseEntity<Ingredient> createPrice(@PathVariable("id") Long id,@RequestBody IngredientRest ingredientPriceRest){
         System.out.println(ingredientPriceRest);
         IngredientPrice ingredientPrice = restMapper.mapToIngredientPrice(ingredientPriceRest);
         Ingredient ingredient = ingredientService.findById(id);
@@ -82,13 +82,12 @@ public class IngredientController {
         if(ingredient == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        List<StockRest> stockRestWithIngredient = stockListRest.stream().map(
-                stockRest -> {
-                    StockRest sr = stockRest;
-                    sr.setIngredient(ingredient);
-                    return sr;
+        List<Stock> stocks = stockListRest.stream()
+                .map(stockRest -> {
+                    stockRest.setIngredient(ingredient);
+                    return restMapper.mapToStock(stockRest);
                 }).toList();
-        stockService.saveAll(stockRestWithIngredient);
+        stockService.saveAll(stocks);
         Ingredient updatedIngredient = ingredientService.findById(id);
         return ResponseEntity.ok(updatedIngredient);
     }

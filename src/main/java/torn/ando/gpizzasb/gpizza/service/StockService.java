@@ -35,11 +35,8 @@ public class StockService {
         return stockDAO.findByIdIngredient(ingredient.getId());
     }
 
-    public List<Stock> saveAll(List<StockRest> stockList) {
-        List<Stock> stocks = stockList.stream()
-                .map(stockRest -> restMapper.mapToStock(stockRest))
-                .collect(Collectors.toList());
-        return stockDAO.saveAll(stocks);
+    public List<Stock> saveAll(List<Stock> stockList) {
+        return stockDAO.saveAll(stockList);
     }
 
 }

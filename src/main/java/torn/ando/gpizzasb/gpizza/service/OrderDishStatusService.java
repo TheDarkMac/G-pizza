@@ -1,6 +1,7 @@
 package torn.ando.gpizzasb.gpizza.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import torn.ando.gpizzasb.gpizza.dao.OrderDishStatusDAO;
 import torn.ando.gpizzasb.gpizza.entity.OrderDishStatus;
@@ -14,7 +15,7 @@ public class OrderDishStatusService {
 
     private OrderDishStatusDAO orderDishStatusDAO;
 
-    public OrderDishStatus saveAll(List<OrderDishStatus> orderDishStatusList) {
+    public ResponseEntity<OrderDishStatus> saveAll(List<OrderDishStatus> orderDishStatusList) {
         System.out.println(orderDishStatusList);
         orderDishStatusList.forEach(orderDishStatus -> {
             if(orderDishStatus.getOrderDish().getActualStatus() == OrderStatusType.CONFIRMED
@@ -31,6 +32,6 @@ public class OrderDishStatusService {
                 System.out.println("need to respect the order, chaos is not in our philosophy");
             }
         });
-        return null;
+        return ResponseEntity.ok(null);
     }
 }

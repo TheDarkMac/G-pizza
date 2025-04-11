@@ -1,7 +1,6 @@
 package torn.ando.gpizzasb.gpizza.mapper;
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import torn.ando.gpizzasb.gpizza.dao.DishDAO;
 import torn.ando.gpizzasb.gpizza.dao.OrderDao;
@@ -25,11 +24,14 @@ public class RestMapper {
         return ingredient;
     }
 
-    public IngredientPrice mapToIngredientPrice(IngredientPriceRest rest) {
+    public IngredientPrice mapToIngredientPrice(IngredientRest rest) {
         IngredientPrice ingredientPrice = new IngredientPrice();
-        ingredientPrice.setPrice(rest.getPrice());
-        ingredientPrice.setDateValue(rest.getDateValue());
-        ingredientPrice.setIngredient(ingredientPrice.getIngredient());
+        ingredientPrice.setPrice(rest.getUnitPrice());
+        ingredientPrice.setDateValue(rest.getUpdatedAt());
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(rest.getId());
+        ingredient.setName(rest.getName());
+        ingredientPrice.setIngredient(ingredient);
         return ingredientPrice;
     }
 
@@ -107,5 +109,13 @@ public class RestMapper {
         else {
             throw new IllegalArgumentException("Invalid orderStatusType: " + orderStatusType);
         }
+    }
+
+    public Order mapToOrder(OrderRest order) {
+        Order o = new Order();
+        o.setReference(order.getReference());
+        o.setId(order.getId());
+        o.setOrderDate(order.getDateOfOrder());
+        return o;
     }
 }

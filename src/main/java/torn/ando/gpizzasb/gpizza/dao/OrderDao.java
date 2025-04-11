@@ -90,6 +90,7 @@ public class OrderDao implements DAOSchema{
         try(Connection connection = dataSource.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, reference);
+            System.out.println(preparedStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 order = mapFromResultSet(resultSet);

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class StockDAO implements DAOSchema{
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setDouble(1, stock.getIngredient().getId());
                 preparedStatement.setDouble(2,stock.getQuantityINOUT());
-                preparedStatement.setTimestamp(3, Timestamp.valueOf(stock.getDateOfMovement()));
+                preparedStatement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
                 preparedStatement.setObject(4, stock.getMovementType(),Types.OTHER);
                 preparedStatement.executeUpdate();
             }catch (SQLException | RuntimeException e){

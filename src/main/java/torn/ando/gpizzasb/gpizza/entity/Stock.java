@@ -21,5 +21,14 @@ public class Stock {
     private MovementType movementType;
     private LocalDateTime dateOfMovement;
 
-
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "id=" + id +
+                ", ingredient=" + ingredient +
+                ", quantityINOUT=" + quantityINOUT +
+                ", movementType=" + movementType +
+                ", dateOfMovement=" + dateOfMovement +
+                '}';
+    }
 }

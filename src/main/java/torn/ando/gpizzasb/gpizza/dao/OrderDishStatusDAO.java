@@ -11,6 +11,7 @@ import torn.ando.gpizzasb.gpizza.enums.OrderStatusType;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class OrderDishStatusDAO implements DAOSchema{
             criteriaINSERT.insert("id_dish","reference_order","order_status","updated_at")
                     .values("?","?","?","?")
                     .onConflict("id_dish","reference_order","order_status")
+                    .doUpdate("updated_at",LocalDateTime.now())
                     .returning("id_dish","reference_order","order_status","updated_at");
         String query = criteriaINSERT.build();
         try(Connection connection = dataSource.getConnection()){
@@ -40,8 +42,11 @@ public class OrderDishStatusDAO implements DAOSchema{
                 preparedStatement.setDouble(1, orderDishStatus.getOrderDish().getDish().getId());
                 preparedStatement.setString(2,orderDishStatus.getOrderDish().getOrder().getReference());
                 preparedStatement.setObject(3,orderDishStatus.getOrderStatus(),Types.OTHER);
-                preparedStatement.setTimestamp(4, Timestamp.valueOf(orderDishStatus.getUpdateAt()));
-                ResultSet resultSet = preparedStatement.executeQuery();
+                preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println("save with success");
                 while(resultSet.next()){
                     OrderDishStatus orderDishStatusL = mapFromResultSet(resultSet);
                     orderDishStatusList.add(orderDishStatusL);
@@ -104,7 +109,6 @@ public class OrderDishStatusDAO implements DAOSchema{
 
     public List<OrderDishStatus> findByReferenceAndDishId(String reference, long dishId) {
         List<OrderDishStatus> orderDishStatusList = new ArrayList<>();
-
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("order_dish_status");
         criteriaSELECT
                 .select("id_dish","reference_order","order_status","updated_at")

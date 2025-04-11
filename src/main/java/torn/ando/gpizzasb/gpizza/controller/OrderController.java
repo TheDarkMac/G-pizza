@@ -9,11 +9,13 @@ import torn.ando.gpizzasb.gpizza.entity.OrderDish;
 import torn.ando.gpizzasb.gpizza.entity.OrderDishStatus;
 import torn.ando.gpizzasb.gpizza.entityRest.OrderDishRest;
 import torn.ando.gpizzasb.gpizza.entityRest.OrderDishStatusRest;
+import torn.ando.gpizzasb.gpizza.entityRest.OrderRest;
 import torn.ando.gpizzasb.gpizza.mapper.RestMapper;
 import torn.ando.gpizzasb.gpizza.service.OrderDishService;
 import torn.ando.gpizzasb.gpizza.service.OrderDishStatusService;
 import torn.ando.gpizzasb.gpizza.service.OrderService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -24,6 +26,17 @@ public class OrderController {
     private OrderService orderService;
     private OrderDishService orderDishService;
     private OrderDishStatusService orderDishStatusService;
+
+    @PutMapping
+    public ResponseEntity<List<Order>> updateOrder(@RequestBody List<OrderRest> order) {
+        List<Order> orderList = new ArrayList<>();
+        order.forEach(orderRest -> {
+            orderList.add(restMapper.mapToOrder(orderRest));
+        });
+
+        return ResponseEntity.ok(orderService.createOrder(orderList));
+
+    }
 
     @GetMapping("{reference}")
     public ResponseEntity<Order> findByReference(@PathVariable String reference){
