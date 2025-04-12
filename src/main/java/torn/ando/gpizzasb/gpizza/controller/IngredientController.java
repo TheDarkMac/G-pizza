@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import torn.ando.gpizzasb.gpizza.entity.Ingredient;
 import torn.ando.gpizzasb.gpizza.entity.IngredientPrice;
 import torn.ando.gpizzasb.gpizza.entity.Stock;
-import torn.ando.gpizzasb.gpizza.entityRest.IngredientPriceRest;
 import torn.ando.gpizzasb.gpizza.entityRest.IngredientRest;
 import torn.ando.gpizzasb.gpizza.entityRest.StockRest;
 import torn.ando.gpizzasb.gpizza.mapper.RestMapper;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import torn.ando.gpizzasb.gpizza.service.StockService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ingredients")
@@ -66,7 +64,6 @@ public class IngredientController {
 
     @PutMapping("{id}/prices")
     public ResponseEntity<Ingredient> createPrice(@PathVariable("id") Long id,@RequestBody IngredientRest ingredientPriceRest){
-        System.out.println(ingredientPriceRest);
         IngredientPrice ingredientPrice = restMapper.mapToIngredientPrice(ingredientPriceRest);
         Ingredient ingredient = ingredientService.findById(id);
         ingredientPrice.setIngredient(ingredient);

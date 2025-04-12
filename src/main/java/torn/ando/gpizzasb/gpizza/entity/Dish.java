@@ -1,5 +1,6 @@
 package torn.ando.gpizzasb.gpizza.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class Dish {
     private long id;
     private String name;
     private double price;
+    @JsonIgnore
     private List<DishIngredient> dishIngredientList;
 
     public Integer getAvailableQuantity(){

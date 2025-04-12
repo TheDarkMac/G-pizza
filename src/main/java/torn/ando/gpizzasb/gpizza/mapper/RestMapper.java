@@ -28,10 +28,12 @@ public class RestMapper {
         IngredientPrice ingredientPrice = new IngredientPrice();
         ingredientPrice.setPrice(rest.getUnitPrice());
         ingredientPrice.setDateValue(rest.getUpdatedAt());
-        Ingredient ingredient = new Ingredient();
-        ingredient.setId(rest.getId());
-        ingredient.setName(rest.getName());
-        ingredientPrice.setIngredient(ingredient);
+        if(rest.getId() != null) {
+            Ingredient ingredient = new Ingredient();
+            ingredient.setId(rest.getId());
+            ingredient.setName(rest.getName());
+            ingredientPrice.setIngredient(ingredient);
+        }
         return ingredientPrice;
     }
 

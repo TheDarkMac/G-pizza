@@ -1,5 +1,6 @@
 package torn.ando.gpizzasb.gpizza.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import torn.ando.gpizzasb.gpizza.enums.Unit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,9 @@ import java.util.List;
 public class Ingredient {
     private long id;
     private String name;
+    @JsonIgnore
     private List<IngredientPrice> prices;
+    @JsonIgnore
     private List<Stock> stockList;
     private Double availableQuantity;
 

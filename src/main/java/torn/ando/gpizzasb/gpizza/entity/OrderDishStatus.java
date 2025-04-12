@@ -1,5 +1,6 @@
 package torn.ando.gpizzasb.gpizza.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import torn.ando.gpizzasb.gpizza.enums.OrderStatusType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Component
 public class OrderDishStatus {
+    @JsonIgnore
     private OrderDish orderDish;
     private OrderStatusType orderStatus;
     private LocalDateTime updateAt;

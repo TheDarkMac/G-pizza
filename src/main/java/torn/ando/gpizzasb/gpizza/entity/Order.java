@@ -19,6 +19,7 @@ public class Order {
     private long id;
     private String reference;
     private List<OrderDish> orderDishList;
+    @JsonIgnore
     private List<OrderStatus> orderStatusList = new ArrayList<>();
     private LocalDateTime orderDate;
 

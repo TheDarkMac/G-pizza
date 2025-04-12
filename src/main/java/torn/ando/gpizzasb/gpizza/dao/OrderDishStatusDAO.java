@@ -42,8 +42,8 @@ public class OrderDishStatusDAO implements DAOSchema{
                 preparedStatement.setDouble(1, orderDishStatus.getOrderDish().getDish().getId());
                 preparedStatement.setString(2,orderDishStatus.getOrderDish().getOrder().getReference());
                 preparedStatement.setObject(3,orderDishStatus.getOrderStatus(),Types.OTHER);
-                preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-            preparedStatement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+                preparedStatement.setTimestamp(4, Timestamp.valueOf(orderDishStatus.getUpdateAt()));
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(orderDishStatus.getUpdateAt()));
 
             ResultSet resultSet = preparedStatement.executeQuery();
             System.out.println("save with success");
