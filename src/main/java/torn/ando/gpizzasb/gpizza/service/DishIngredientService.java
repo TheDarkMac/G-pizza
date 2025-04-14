@@ -26,7 +26,7 @@ public class DishIngredientService {
                     dishIngredient.setUnit(dishIngredientRest.getUnit());
                     dishIngredient.setRequiredQuantity(dishIngredientRest.getRequiredQuantity());
                     dishIngredient.setIngredient(dishIngredientRest.getIngredient());
-                    dishIngredient.setDish(dishIngredientRest.getDish());
+                   // dishIngredient.setDish(dishIngredientRest.getDish());
                     return dishIngredient;
                 }).toList();
         return dishIngredientDAO.saveAll(dishIngredientList);

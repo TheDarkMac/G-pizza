@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import torn.ando.gpizzasb.gpizza.dao.DishDAO;
 import torn.ando.gpizzasb.gpizza.entity.Dish;
+import torn.ando.gpizzasb.gpizza.entityRest.DishRest;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class DishService {
         return dishDAO.findById(id);
     }
 
-    public List<Dish> saveAll(List<Dish> dishes) {
-        return dishDAO.saveAll(dishes);
+    public List<Dish> saveAll(List<DishRest> dishesRest) {
+        throw new UnsupportedOperationException("not implemented yet");
     }
 }

@@ -67,7 +67,34 @@ public class IngredientDAO implements DAOSchema{
         String query = criteriaSELECT.build();
         try (Connection connection = dataSource.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            System.out.println(preparedStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ingredients = new ArrayList<>();
+            while (resultSet.next()) {
+                Ingredient ingredient = mapFroResultset(resultSet);
+                ingredients.add(ingredient);
+            }
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return (List<T>) ingredients;
+    }
+
+    public <T> List<T> findAll(Integer size, Integer page) {
+        List<Ingredient> ingredients = null;
+
+        CriteriaSELECT criteriaSELECT = new CriteriaSELECT("ingredient");
+        criteriaSELECT.select(
+                "ingredient.id_ingredient", "name", //about ingredient
+                "available_quantity" //about available_quantity
+        );
+        criteriaSELECT.join("LEFT",
+                "available_quantity",
+                "ingredient.id_ingredient = available_quantity.id_ingredient");
+        criteriaSELECT.limit(size).offset((page-1)*size);
+        criteriaSELECT.orderBy("id_ingredient",true);
+        String query = criteriaSELECT.build();
+        try (Connection connection = dataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             ingredients = new ArrayList<>();
             while (resultSet.next()) {
@@ -124,16 +151,16 @@ public class IngredientDAO implements DAOSchema{
         ingredientList.forEach(ingredient -> {
             CriteriaUPDATE criteriaUPDATE = new CriteriaUPDATE("ingredient");
             criteriaUPDATE.set("name","?");
-            criteriaUPDATE.set("unit","?");
-            criteriaUPDATE.and("id_ingredient",ingredient.getId());
+            criteriaUPDATE.and("id_ingredient","?");
 
             String query = criteriaUPDATE.build();
             try (Connection connection = dataSource.getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setString(1, ingredient.getName());
-                preparedStatement.setDouble(3, ingredient.getId());
+                preparedStatement.setDouble(2, ingredient.getId());
                 preparedStatement.executeUpdate();
-
+                Ingredient i = findById(ingredient.getId());
+                ingredients.add(i);
             } catch (RuntimeException | SQLException e) {
                 throw new RuntimeException(e);
             }

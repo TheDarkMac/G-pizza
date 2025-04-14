@@ -43,7 +43,7 @@ public class DishDAO implements DAOSchema{
 
     @Override
     public <T> T findById(double id) {
-        Dish dish = new Dish();
+        Dish dish = null;
         CriteriaSELECT criteriaSELECT = new CriteriaSELECT("dish");
         criteriaSELECT.select("id_dish","name","unit_price" //about dish
         );

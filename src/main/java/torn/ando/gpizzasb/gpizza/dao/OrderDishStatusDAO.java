@@ -29,7 +29,6 @@ public class OrderDishStatusDAO implements DAOSchema{
         List<OrderDishStatus> orderDishStatusList = new ArrayList<>();
         List<OrderDishStatus> o = (List<OrderDishStatus>) object;
         o.forEach(orderDishStatus -> {
-            System.out.println("into saveAll: "+ orderDishStatus);
             CriteriaINSERT criteriaINSERT = new CriteriaINSERT("order_dish_status");
             criteriaINSERT.insert("id_dish","reference_order","order_status","updated_at")
                     .values("?","?","?","?")
@@ -46,7 +45,6 @@ public class OrderDishStatusDAO implements DAOSchema{
             preparedStatement.setTimestamp(5, Timestamp.valueOf(orderDishStatus.getUpdateAt()));
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("save with success");
                 while(resultSet.next()){
                     OrderDishStatus orderDishStatusL = mapFromResultSet(resultSet);
                     orderDishStatusList.add(orderDishStatusL);

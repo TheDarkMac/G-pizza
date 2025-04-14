@@ -100,7 +100,7 @@ public class DishIngredientDAO implements DAOSchema{
         Ingredient ingredient = ingredientDAO.findById(resultSet.getLong("id_ingredient"));
         DishIngredient dishIngredient = new DishIngredient();
         dishIngredient.setIngredient(ingredient);
-        dishIngredient.setRequiredQuantity(resultSet.getLong("quantity"));
+        dishIngredient.setRequiredQuantity(resultSet.getDouble("quantity"));
         dishIngredient.setUnit(Unit.valueOf(resultSet.getString("unit")));
         return dishIngredient;
     }

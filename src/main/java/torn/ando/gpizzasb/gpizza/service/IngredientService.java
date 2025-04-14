@@ -53,17 +53,15 @@ public class IngredientService {
         return ingredientDAO.findAll();
     }
 
+    public List<Ingredient> findAll(Integer size, Integer page) {
+        return ingredientDAO.findAll(size, page);
+    }
+
     public List<Ingredient> updateAll(List<IngredientRest> ingredientRests) {
         List<Ingredient> ingredientList = ingredientRests
                 .stream()
                 .map(restMapper::mapToIngredient)
                 .toList();
-        ingredientDAO.updateAll(ingredientList);
-        List<Ingredient> savedIngredients = new ArrayList<>();
-        ingredientList.forEach(ingredient -> {
-            Ingredient savedIngredient = ingredientDAO.findById(ingredient.getId());
-            savedIngredients.add(savedIngredient);
-        });
-        return savedIngredients;
+        return ingredientDAO.updateAll(ingredientList);
     }
 }

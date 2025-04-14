@@ -9,6 +9,9 @@ import torn.ando.gpizzasb.gpizza.entity.*;
 import torn.ando.gpizzasb.gpizza.entityRest.*;
 import torn.ando.gpizzasb.gpizza.enums.OrderStatusType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class RestMapper {
@@ -120,4 +123,33 @@ public class RestMapper {
         o.setOrderDate(order.getDateOfOrder());
         return o;
     }
+
+    public Dish mapToDish(DishRest dishRest) {
+        Dish dish =  new Dish();
+        dish.setId(dishRest.getId());
+        dish.setName(dishRest.getName());
+        dish.setPrice(dishRest.getPrice());
+        if(!dishRest.getDishIngredientRestList().isEmpty()){
+            List<DishIngredient> dishIngredientList = dishRest.getDishIngredientRestList()
+                    .stream()
+                    .map(this::mapToDishIngredient)
+                    .toList();
+            dish.setDishIngredientList(dishIngredientList);
+        }else {
+            dish.setDishIngredientList(new ArrayList<>());
+        }
+        return dish;
+    }
+
+    public DishIngredient mapToDishIngredient(DishIngredientRest dishIngredientRest) {
+        DishIngredient dishIngredient = new DishIngredient();
+        dishIngredient.setRequiredQuantity(dishIngredientRest.getRequiredQuantity());
+
+        if (dishIngredientRest.getIngredient() == null) {
+            throw new IllegalArgumentException("Ingredient cannot be null for DishIngredient.");
+        }
+        dishIngredient.setIngredient(dishIngredientRest.getIngredient());
+        return dishIngredient;
+    }
+
 }

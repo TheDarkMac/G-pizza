@@ -18,7 +18,6 @@ public class DishIngredientRest {
     private Unit unit;
     private double requiredQuantity;
     private Ingredient ingredient;
-    private Dish dish;
 
     @Override
     public String toString() {
@@ -28,7 +27,6 @@ public class DishIngredientRest {
                 ", unit=" + unit +
                 ", requiredQuantity=" + requiredQuantity +
                 ", ingredient=" + ingredient +
-                ", dish=" + dish +
                 '}';
     }
 }
