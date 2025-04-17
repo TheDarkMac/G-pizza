@@ -19,6 +19,7 @@ public class Dish {
     private long id;
     private String name;
     private double price;
+    @JsonIgnore
     private List<DishIngredient> dishIngredientList = new ArrayList<>();
 
     public Integer getAvailableQuantity(){

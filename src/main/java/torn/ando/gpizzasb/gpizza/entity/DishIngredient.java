@@ -17,4 +17,14 @@ public class DishIngredient {
     private Ingredient ingredient;
     private Unit unit;
     private double requiredQuantity;
+
+    @Override
+    public String toString() {
+        return "DishIngredient{" +
+                "dish=" + dish +
+                ", ingredient=" + ingredient +
+                ", unit=" + unit +
+                ", requiredQuantity=" + requiredQuantity +
+                '}';
+    }
 }

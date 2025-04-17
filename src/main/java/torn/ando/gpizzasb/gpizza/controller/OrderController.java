@@ -44,7 +44,7 @@ public class OrderController {
         if(order == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        orderService.changeOrderStatus(reference);
+        //orderService.changeOrderStatus(reference);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
@@ -76,6 +76,7 @@ public class OrderController {
         status.setOrderReference(reference);
         OrderDishStatus ods = restMapper.mapToOrderDishStatus(status);
         orderDishStatusService.saveAll(List.of(ods));
-        return ResponseEntity.ok(null);
+        Order order = orderService.findByReference(reference);
+        return ResponseEntity.ok(order);
     }
 }

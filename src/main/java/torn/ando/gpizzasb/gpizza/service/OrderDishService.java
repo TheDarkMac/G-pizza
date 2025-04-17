@@ -72,4 +72,8 @@ public class OrderDishService {
         });
         return orderDishList;
     }
+
+    public OrderDish findByReferenceAndDishId(String orderReference, Long dishId) {
+        return orderDishDAO.findByReferenceAndDishId(orderReference,dishId);
+    }
 }

@@ -29,6 +29,8 @@ public class DishIngredientDAO implements DAOSchema{
             CriteriaINSERT criteriaINSERT = new CriteriaINSERT("dish_ingredient");
             criteriaINSERT.insert("id_dish","id_ingredient","quantity","unit")
                     .values("?","?","?","?")
+                    .onConflict("id_dish","id_ingredient")
+                    .doUpdate("quantity","?")
                     .returning("id_dish","id_ingredient","quantity","unit");
             String query = criteriaINSERT.build();
             try(Connection connection = dataSource.getConnection()){
@@ -37,6 +39,8 @@ public class DishIngredientDAO implements DAOSchema{
                 preparedStatement.setLong(2, dishIngredient.getIngredient().getId());
                 preparedStatement.setDouble(3,dishIngredient.getRequiredQuantity());
                 preparedStatement.setObject(4,dishIngredient.getUnit(), Types.OTHER);
+                preparedStatement.setDouble(5,dishIngredient.getRequiredQuantity());
+
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     DishIngredient dishIngredient1 = mapFromResultSet(resultSet);

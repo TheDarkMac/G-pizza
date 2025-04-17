@@ -15,24 +15,16 @@ import java.util.List;
 public class IngredientRest implements Rest {
     private Long id;
     private String name;
-    private Unit unit;
     private Double unitPrice;
     private LocalDateTime updatedAt;
-    private Double availableQuantity;
-    private List<IngredientPrice> prices;
-    private List<Stock> stockMovements;
 
     @Override
     public String toString() {
         return "IngredientRest{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", unit=" + unit +
                 ", unitPrice=" + unitPrice +
                 ", updatedAt=" + updatedAt +
-                ", availableQuantity=" + availableQuantity +
-                ", prices=" + prices +
-                ", stockMovements=" + stockMovements +
                 '}';
     }
 }

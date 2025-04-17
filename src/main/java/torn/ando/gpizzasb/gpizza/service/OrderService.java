@@ -1,6 +1,7 @@
 package torn.ando.gpizzasb.gpizza.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import torn.ando.gpizzasb.gpizza.dao.OrderDao;
 import torn.ando.gpizzasb.gpizza.dao.OrderDishDAO;
@@ -28,7 +29,10 @@ public class OrderService {
     private RestMapper restMapper;
 
     public Order findByReference(String reference){
-        return orderDao.findByReference(reference);
+        Order order = orderDao.findByReference(reference);
+        List<OrderDish> orderDishes = orderDishDAO.findByOrderReference(reference);
+        order.setOrderDishList(orderDishes);
+        return order;
     }
 
     public List<Order> createOrder(List<Order> orders) {

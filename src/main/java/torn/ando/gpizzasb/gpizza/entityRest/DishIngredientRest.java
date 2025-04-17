@@ -14,10 +14,10 @@ import torn.ando.gpizzasb.gpizza.enums.Unit;
 @Setter
 public class DishIngredientRest {
     private Long id;
+    private Long dishId;
     private String name;
     private Unit unit;
     private double requiredQuantity;
-    private Ingredient ingredient;
 
     @Override
     public String toString() {
@@ -26,7 +26,6 @@ public class DishIngredientRest {
                 ", name='" + name + '\'' +
                 ", unit=" + unit +
                 ", requiredQuantity=" + requiredQuantity +
-                ", ingredient=" + ingredient +
                 '}';
     }
 }

@@ -51,11 +51,14 @@ public class IngredientController {
     }
 
     @PutMapping
-    public ResponseEntity<List<Ingredient>> update(@RequestBody List<IngredientRest> ingredient){
-        if(ingredient == null) {
+    public ResponseEntity<List<Ingredient>> update(@RequestBody List<IngredientRest> ingredientRestList){
+        if(ingredientRestList == null || ingredientRestList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(ingredientService.updateAll(ingredient));
+        List<Ingredient> ingredients = ingredientRestList.stream()
+                .map(ingredientRest -> restMapper.mapToIngredient(ingredientRest))
+                .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientService.updateAll(ingredients));
     }
 
     @GetMapping("{id}")
@@ -68,12 +71,17 @@ public class IngredientController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Ingredient> update(@PathVariable("id") Long id, @RequestBody IngredientRest ingredient){
+    public ResponseEntity<Ingredient> update(@PathVariable("id") Long id, @RequestBody IngredientRest ingredientRest){
         Ingredient i = ingredientService.findById(id);
-        if(i == null || ingredient == null){
+        if(i == null || ingredientRest == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(ingredientService.updateAll(List.of(ingredient)).get(0));
+        Ingredient ingredientUpdate = restMapper.mapToIngredient(ingredientRest);
+        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
+                .body(
+                        ingredientService
+                                .updateAll(List.of(ingredientUpdate))
+                                .getFirst());
     }
 
     @GetMapping("{id}/prices")

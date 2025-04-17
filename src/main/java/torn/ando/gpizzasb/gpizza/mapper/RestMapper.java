@@ -3,22 +3,22 @@ package torn.ando.gpizzasb.gpizza.mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import torn.ando.gpizzasb.gpizza.dao.DishDAO;
+import torn.ando.gpizzasb.gpizza.dao.IngredientDAO;
 import torn.ando.gpizzasb.gpizza.dao.OrderDao;
 import torn.ando.gpizzasb.gpizza.dao.OrderDishDAO;
 import torn.ando.gpizzasb.gpizza.entity.*;
 import torn.ando.gpizzasb.gpizza.entityRest.*;
 import torn.ando.gpizzasb.gpizza.enums.OrderStatusType;
-
-import java.util.ArrayList;
-import java.util.List;
+import torn.ando.gpizzasb.gpizza.service.*;
 
 @AllArgsConstructor
 @Service
 public class RestMapper {
 
-    private DishDAO dishDAO;
-    private OrderDishDAO orderDishDAO;
-    private OrderDao orderDao;
+    private final IngredientDAO ingredientService;
+    private DishDAO dishService;
+    private OrderDishDAO orderDishService;
+    private OrderDao orderService;
 
     public Ingredient mapToIngredient(IngredientRest rest) {
         Ingredient ingredient = new Ingredient();
@@ -56,7 +56,7 @@ public class RestMapper {
 
     public OrderDish mapToOrderDish(OrderDishRest rest){
         OrderDish orderDish = new OrderDish();
-        Dish dish = dishDAO.findById(rest.getId());
+        Dish dish = dishService.findById(rest.getId());
         orderDish.setDish(dish);
         orderDish.setOrder(rest.getOrder());
         orderDish.setQuantity(rest.getQuantity());
@@ -66,8 +66,8 @@ public class RestMapper {
     public OrderDishStatus mapToOrderDishStatus(OrderDishStatusRest rest){
         OrderDishStatus orderDishStatus = new OrderDishStatus();
         orderDishStatus.setOrderStatus(rest.getOrderStatus());
-        Order order = orderDao.findByReference(rest.getOrderReference());
-        OrderDish orderDish = orderDishDAO.findByReferenceAndDishId(rest.getOrderReference(),rest.getDishId());
+        Order order = orderService.findByReference(rest.getOrderReference());
+        OrderDish orderDish = orderDishService.findByReferenceAndDishId(rest.getOrderReference(),rest.getDishId());
         orderDish.setOrder(order);
         orderDishStatus.setOrderDish(orderDish);
         orderDishStatus.setUpdateAt(rest.getUpdatedAt());
@@ -125,31 +125,28 @@ public class RestMapper {
     }
 
     public Dish mapToDish(DishRest dishRest) {
-        Dish dish =  new Dish();
+        Dish dish = new Dish();
         dish.setId(dishRest.getId());
         dish.setName(dishRest.getName());
         dish.setPrice(dishRest.getPrice());
-        if(!dishRest.getDishIngredientRestList().isEmpty()){
-            List<DishIngredient> dishIngredientList = dishRest.getDishIngredientRestList()
-                    .stream()
-                    .map(this::mapToDishIngredient)
-                    .toList();
-            dish.setDishIngredientList(dishIngredientList);
-        }else {
-            dish.setDishIngredientList(new ArrayList<>());
-        }
         return dish;
     }
 
     public DishIngredient mapToDishIngredient(DishIngredientRest dishIngredientRest) {
-        DishIngredient dishIngredient = new DishIngredient();
-        dishIngredient.setRequiredQuantity(dishIngredientRest.getRequiredQuantity());
-
-        if (dishIngredientRest.getIngredient() == null) {
-            throw new IllegalArgumentException("Ingredient cannot be null for DishIngredient.");
+       DishIngredient dishIngredient = new DishIngredient();
+       Ingredient i = ingredientService.findById(dishIngredientRest.getId());
+        if(i != null) {
+            dishIngredient.setIngredient(i);
+        }else {
+            throw new IllegalArgumentException("Invalid ingredient: " + dishIngredientRest);
         }
-        dishIngredient.setIngredient(dishIngredientRest.getIngredient());
-        return dishIngredient;
+        Dish dish = dishService.findById(dishIngredientRest.getDishId());
+        if(dish != null) {
+            dishIngredient.setDish(dish);
+        }
+       dishIngredient.setRequiredQuantity(dishIngredientRest.getRequiredQuantity());
+       dishIngredient.setUnit(dishIngredientRest.getUnit());
+       return dishIngredient;
     }
 
 }

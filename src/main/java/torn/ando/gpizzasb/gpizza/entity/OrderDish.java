@@ -17,7 +17,6 @@ import java.util.List;
 public class OrderDish {
     @JsonIgnore
     private Order order;
-    @JsonIgnore
     private Dish dish;
     private Double quantity;
     @JsonIgnore

@@ -33,8 +33,7 @@ public class IngredientPriceDAO implements DAOSchema {
                 preparedStatement.setLong(1,ingredientPrice.getIngredient().getId());
                 preparedStatement.setTimestamp(2, Timestamp.valueOf(ingredientPrice.getDateValue()));
                 preparedStatement.setDouble(3,ingredientPrice.getPrice());
-
-
+                System.out.println(preparedStatement);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     IngredientPrice price = mapFromResultSet(resultSet);
@@ -46,6 +45,7 @@ public class IngredientPriceDAO implements DAOSchema {
             }
 
         });
+        System.out.println(ingredientPrices);
         return (List<T>) ingredientPrices;
     }
 

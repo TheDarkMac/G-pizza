@@ -17,7 +17,6 @@ import java.util.List;
 public class Ingredient {
     private long id;
     private String name;
-    @JsonIgnore
     private List<IngredientPrice> prices;
     @JsonIgnore
     private List<Stock> stockList;

@@ -1,6 +1,7 @@
 package torn.ando.gpizzasb.gpizza.dao;
 
 import lombok.AllArgsConstructor;
+import torn.ando.gpizzasb.gpizza.criteria.CriteriaINSERT;
 import torn.ando.gpizzasb.gpizza.criteria.CriteriaSELECT;
 import torn.ando.gpizzasb.gpizza.dataSource.DataSource;
 import torn.ando.gpizzasb.gpizza.entity.Dish;
@@ -19,7 +20,34 @@ public class DishDAO implements DAOSchema{
 
     @Override
     public <T> List<T> saveAll(List<T> object) {
-        throw new UnsupportedOperationException("not support yet");
+        List<Dish> dishList = (List<Dish>) object;
+        List<Dish> dishes = new ArrayList<>();
+        dishList.forEach(dish -> {
+            CriteriaINSERT criteriaINSERT = new CriteriaINSERT("dish")
+                    .insert("id_dish","name","unit_price")
+                    .onConflict("id_dish")
+                    .doUpdate("unit_price","?")
+                    .doUpdate("name","?")
+                    .values("?","?","?")
+                    .returning("id_dish","name","unit_price");
+            String query = criteriaINSERT.build();
+            try(Connection connection = dataSource.getConnection()){
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setDouble(1,dish.getId());
+                preparedStatement.setString(2,dish.getName());
+                preparedStatement.setDouble(3,dish.getPrice());
+                preparedStatement.setDouble(4,dish.getPrice());
+                preparedStatement.setString(5,dish.getName());
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while(resultSet.next()){
+                    Dish d = mapFromResultSet(resultSet);
+                    dishes.add(d);
+                }
+            }catch (SQLException | RuntimeException e){
+                throw new RuntimeException(e);
+            }
+        });
+        return (List<T>) dishes;
     }
 
     @Override

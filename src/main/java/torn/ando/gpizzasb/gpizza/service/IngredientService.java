@@ -57,11 +57,7 @@ public class IngredientService {
         return ingredientDAO.findAll(size, page);
     }
 
-    public List<Ingredient> updateAll(List<IngredientRest> ingredientRests) {
-        List<Ingredient> ingredientList = ingredientRests
-                .stream()
-                .map(restMapper::mapToIngredient)
-                .toList();
-        return ingredientDAO.updateAll(ingredientList);
+    public List<Ingredient> updateAll(List<Ingredient> ingredients) {
+        return ingredientDAO.updateAll(ingredients);
     }
 }
