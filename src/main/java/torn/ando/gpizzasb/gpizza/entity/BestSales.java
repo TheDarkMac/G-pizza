@@ -10,6 +10,7 @@ import java.util.List;
 @Setter
 @Component
 public class BestSales {
-    private Integer size;
-    private List<BestSalesDish> dishes;
+    private String dishName;
+    private Integer quantity;
+    private Double benefice;
 }

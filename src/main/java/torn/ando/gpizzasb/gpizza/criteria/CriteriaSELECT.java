@@ -9,6 +9,7 @@ public class CriteriaSELECT {
     private List<String> joins = new ArrayList<>();
     private List<String> conditions = new ArrayList<>();
     private List<Object> parameters = new ArrayList<>();
+    private List<String> groupBy = new ArrayList<>();
     private List<String> orderBy = new ArrayList<>();
     private Integer limit;
     private Integer offset;
@@ -51,6 +52,13 @@ public class CriteriaSELECT {
         return this;
     }
 
+    public CriteriaSELECT groupBy(String... columns) {
+        for (String column : columns) {
+            groupBy.add(column);
+        }
+        return this;
+    }
+
     public CriteriaSELECT orderBy(String column, boolean asc) {
         orderBy.add(column + (asc ? " ASC" : " DESC"));
         return this;
@@ -83,6 +91,10 @@ public class CriteriaSELECT {
 
         query.append(" WHERE ").append(String.join(" ", conditions));
 
+        if (!groupBy.isEmpty()) {
+            query.append(" GROUP BY ").append(String.join(", ", groupBy));
+        }
+
         if (!orderBy.isEmpty()) {
             query.append(" ORDER BY ").append(String.join(", ", orderBy));
         }
@@ -101,6 +113,4 @@ public class CriteriaSELECT {
     public List<Object> getParameters() {
         return parameters;
     }
-
-
 }
