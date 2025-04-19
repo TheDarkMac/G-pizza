@@ -54,6 +54,7 @@ public class OrderController {
         if(order == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        System.out.println(dishRestList);
         List<OrderDish> orderDishList = dishRestList
                 .stream()
                 .map(dishRest -> {

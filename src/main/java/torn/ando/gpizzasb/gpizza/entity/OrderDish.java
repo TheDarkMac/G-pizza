@@ -25,9 +25,7 @@ public class OrderDish {
     @Override
     public String toString() {
         return "OrderDish{" +
-                ", dish=" + dish +
                 ", quantity=" + quantity +
-                ", orderStatusList=" + orderStatusList +
                 '}';
     }
 
@@ -40,4 +38,5 @@ public class OrderDish {
                 .map(OrderDishStatus::getOrderStatus)
                 .orElse(null);
     }
+
 }

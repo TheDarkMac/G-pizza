@@ -11,6 +11,7 @@ import torn.ando.gpizzasb.gpizza.entity.OrderDish;
 import torn.ando.gpizzasb.gpizza.entity.OrderStatus;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +38,10 @@ public class OrderDao implements DAOSchema{
             try(Connection connection = dataSource.getConnection()){
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setString(1,order.getReference());
-                preparedStatement.setTimestamp(2, Timestamp.valueOf(order.getOrderDate()));
+                preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
 
                 //if on conflict, make update
-                preparedStatement.setTimestamp(3, Timestamp.valueOf(order.getOrderDate()));
+                preparedStatement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while(resultSet.next()){
@@ -86,7 +87,6 @@ public class OrderDao implements DAOSchema{
         criteriaSELECT.select("id_order","reference_order","datetime_of_order")
                 .and("reference_order");
         String query = criteriaSELECT.build();
-
         try(Connection connection = dataSource.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, reference);

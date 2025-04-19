@@ -129,7 +129,6 @@ public class OrderDishDAO implements DAOSchema{
         return null;
     }
 
-
     public OrderDish mapFromResultSet(ResultSet resultSet) throws SQLException {
         OrderDish orderDish = new OrderDish();
         List<OrderDishStatus> orderDishStatusList = orderDishStatusDAO.findByReferenceAndDishId(resultSet.getString("reference_order"), resultSet.getLong("id_dish"));
