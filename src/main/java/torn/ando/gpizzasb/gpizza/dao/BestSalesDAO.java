@@ -68,7 +68,7 @@ public class BestSalesDAO {
             criteriaINSERT.insert("reference","id_dish","quantity","\"from\"","\"to\"","benefice");
             criteriaINSERT.values("?","?","?","?","?","?")
                     .onConflict("reference","id_dish","\"from\"","\"to\"")
-                    .returning("reference","id_dish","quantity","\"from\"","\"to\"")
+                    .returning("reference","id_dish","quantity","\"from\"","\"to\"","benefice")
             ;
             String query = criteriaINSERT.build();
             System.out.println(query);
