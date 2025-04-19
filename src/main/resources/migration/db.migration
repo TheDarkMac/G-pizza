@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS dish_order CASCADE;
 DROP TABLE IF EXISTS order_status CASCADE;
 DROP TABLE IF EXISTS order_dish_status CASCADE;
 DROP TYPE IF EXISTS order_status_type CASCADE;
+DROP TABLE IF EXISTS market_place CASCADE;
 
 CREATE TYPE unit AS ENUM('G','L','U');
 
@@ -152,3 +153,98 @@ CREATE TABLE order_dish_status(
     CONSTRAINT pk_order_dish_status_reference_order FOREIGN KEY (reference_order) REFERENCES "order"(reference_order) ON DELETE CASCADE,
     CONSTRAINT pk_order_dish_status_id_dish FOREIGN KEY (id_dish) REFERENCES "dish"(id_dish) ON DELETE CASCADE
 );
+
+CREATE TABLE sales_point (
+    id integer,
+    reference varchar(150) UNIQUE,
+    place varchar(150)
+);
+
+CREATE TABLE best_sales(
+    reference varchar(150),
+    id_dish BIGINT,
+    "from" DATE,
+    "to" DATE,
+    benefice DECIMAL(10,2),
+    quantity DECIMAL(10,2),
+    PRIMARY KEY (reference,id_dish,"from","to"),
+    CONSTRAINT pk_best_sakes_reference FOREIGN KEY (reference) REFERENCES "sales_point"(reference) ON DELETE CASCADE
+);
+
+
+
+
+
+
+
+
+
+-- -- 1) Supprimer tous les triggers et fonctions obsolètes
+-- DROP TRIGGER IF EXISTS trg_after_insert_dish_order    ON dish_order;
+-- DROP TRIGGER IF EXISTS trg_after_insert_order_dish_status ON order_dish_status;
+
+-- DROP FUNCTION IF EXISTS insert_into_dish_order_status() CASCADE;
+-- DROP FUNCTION IF EXISTS trg_init_dish_order_status()       CASCADE;
+-- DROP FUNCTION IF EXISTS trg_update_dish_order_status()     CASCADE;
+
+-- -- 2) Vider la table de suivi pour ne pas avoir de doublons
+-- TRUNCATE dish_order_status RESTART IDENTITY;
+
+-- -- 3) Re-créer la table (clé primaire sur référence+plat)
+-- DROP TABLE IF EXISTS dish_order_status;
+-- CREATE TABLE dish_order_status (
+--   reference_order      VARCHAR(150)       NOT NULL,
+--   dish_id              BIGINT             NOT NULL,
+--   dish_status          order_status_type  NOT NULL,
+--   datetime             TIMESTAMPTZ        NOT NULL DEFAULT now(),
+--   beginning_time       TIMESTAMPTZ,
+--   end_time             TIMESTAMPTZ,
+--   preparation_duration INTERVAL,
+--   PRIMARY KEY (reference_order, dish_id),
+--   FOREIGN KEY (reference_order)
+--     REFERENCES "order"(reference_order) ON DELETE CASCADE,
+--   FOREIGN KEY (dish_id)
+--     REFERENCES dish(id_dish)        ON DELETE CASCADE
+-- );
+
+-- -- 4a) Trigger “INSERT dans dish_order → CREATED”
+-- CREATE OR REPLACE FUNCTION trg_init_dish_order_status()
+-- RETURNS TRIGGER AS $$
+-- BEGIN
+--   INSERT INTO dish_order_status(reference_order, dish_id, dish_status, datetime)
+--     VALUES (NEW.reference_order, NEW.id_dish, 'CREATED', now());
+--   RETURN NEW;
+-- END;
+-- $$ LANGUAGE plpgsql;
+
+-- CREATE TRIGGER trg_after_insert_dish_order
+--   AFTER INSERT ON dish_order
+--   FOR EACH ROW
+--   EXECUTE FUNCTION trg_init_dish_order_status();
+
+-- -- 4b) Trigger “INSERT dans order_dish_status → UPDATE unique”
+-- CREATE OR REPLACE FUNCTION trg_update_dish_order_status()
+-- RETURNS TRIGGER AS $$
+-- BEGIN
+--   UPDATE dish_order_status
+--      SET dish_status         = NEW.order_status,
+--          datetime            = NEW.updated_at,
+--          beginning_time      = CASE WHEN NEW.order_status = 'IN_PREPARATION'
+--                                      THEN NEW.updated_at
+--                                      ELSE beginning_time END,
+--          end_time            = CASE WHEN NEW.order_status = 'DONE'
+--                                      THEN NEW.updated_at
+--                                      ELSE end_time END,
+--          preparation_duration = CASE WHEN NEW.order_status = 'DONE'
+--                                      THEN NEW.updated_at - beginning_time
+--                                      ELSE preparation_duration END
+--    WHERE reference_order = NEW.reference_order
+--      AND dish_id         = NEW.id_dish;
+--   RETURN NEW;
+-- END;
+-- $$ LANGUAGE plpgsql;
+
+-- CREATE TRIGGER trg_after_insert_order_dish_status
+--   AFTER INSERT ON order_dish_status
+--   FOR EACH ROW
+--   EXECUTE FUNCTION trg_update_dish_order_status();

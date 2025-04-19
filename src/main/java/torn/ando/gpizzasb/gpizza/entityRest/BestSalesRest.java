@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
-import torn.ando.gpizzasb.gpizza.entity.Dish;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +15,10 @@ import java.util.List;
 @Component
 public class BestSalesRest {
     private Integer size;
+    private String reference;
+    private String dishName;
+    private Long dishId;
+    private Long quantity;
     private LocalDate from;
     private LocalDate to;
 }

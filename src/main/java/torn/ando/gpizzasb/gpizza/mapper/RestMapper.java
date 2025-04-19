@@ -9,7 +9,6 @@ import torn.ando.gpizzasb.gpizza.dao.OrderDishDAO;
 import torn.ando.gpizzasb.gpizza.entity.*;
 import torn.ando.gpizzasb.gpizza.entityRest.*;
 import torn.ando.gpizzasb.gpizza.enums.OrderStatusType;
-import torn.ando.gpizzasb.gpizza.service.*;
 
 @AllArgsConstructor
 @Service
@@ -54,12 +53,12 @@ public class RestMapper {
         return stock;
     }
 
-    public OrderDish mapToOrderDish(OrderDishRest rest){
+    public OrderDish mapToOrderDish(DishRest rest){
         OrderDish orderDish = new OrderDish();
         Dish dish = dishService.findById(rest.getId());
         orderDish.setDish(dish);
         orderDish.setOrder(rest.getOrder());
-        orderDish.setQuantity(rest.getQuantity());
+        orderDish.setQuantity(rest.getQuantityOrdered());
         return orderDish;
     }
 
@@ -71,6 +70,15 @@ public class RestMapper {
         orderDish.setOrder(order);
         orderDishStatus.setOrderDish(orderDish);
         orderDishStatus.setUpdateAt(rest.getUpdatedAt());
+
+        /**
+         * Instanciation anle ProcessingTime
+         *
+         ProcessingTime processingTime = new ProcessingTime();
+         processingTime.setIdProcessingTime(1);
+         processingTime.setIdDish(orderDish.getDish().getId());
+         processingTime.setReferenceOrder(orderDish.getOrder().getReference());
+         */
         return orderDishStatus;
     }
 
@@ -104,9 +112,18 @@ public class RestMapper {
         }
         else if(orderStatusType == 3) {
             return OrderStatusType.IN_PREPARATION;
+            //recuperation anle date de debut de preparation
+            //processingTime.setBeginningTime(rest.getUpdatedAt());
         }
         else if(orderStatusType == 4) {
             return OrderStatusType.DONE;
+            /**
+             * recuperation anle date de fin de preparation :
+             * processingTime.setEndTime(orderDish.getUpdatedAt());
+             *
+             * calcule difference de temps entre les deux dates===preparationTime:
+             * processingTime.calculatePreparationTime(this.beginningTime,this.endTime);
+             */
         }
         else if(orderStatusType == 5) {
             return OrderStatusType.SERVED;
@@ -120,7 +137,6 @@ public class RestMapper {
         Order o = new Order();
         o.setReference(order.getReference());
         o.setId(order.getId());
-        o.setOrderDate(order.getDateOfOrder());
         return o;
     }
 
@@ -149,4 +165,34 @@ public class RestMapper {
        return dishIngredient;
     }
 
+    public OrderRest mapToOrderRest(Order order){
+        OrderRest orderRest = new OrderRest();
+        orderRest.setId(order.getId());
+        orderRest.setTotalAmount(order.getTotalPrice());
+        orderRest.setActualStatus(order.getActualStatus());
+        orderRest.setDishes(order.getOrderDishList().stream()
+                .map(orderDish -> mapToOrderDishRest(orderDish))
+                .toList());
+        return orderRest;
+    }
+
+    public DishRest mapToOrderDishRest(OrderDish orderDish){
+        DishRest dishRest = new DishRest();
+        dishRest.setId(dishRest.getId());
+        dishRest.setName(orderDish.getDish().getName());
+        dishRest.setQuantityOrdered(orderDish.getQuantity());
+        dishRest.setActualOrderStatus(orderDish.getActualStatus());
+        return dishRest;
+    }
+
+    public BestSales mapToBestSales(BestSalesRest bestSalesRest){
+        BestSales bestSales = new BestSales();
+        bestSales.setDishId(bestSalesRest.getDishId());
+        bestSales.setDishName(bestSalesRest.getDishName());
+        bestSales.setReference(bestSalesRest.getReference());
+        bestSales.setQuantity(Math.toIntExact(bestSalesRest.getQuantity()));
+        bestSales.setFrom(bestSalesRest.getFrom());
+        bestSales.setTo(bestSalesRest.getTo());
+        return bestSales;
+    }
 }

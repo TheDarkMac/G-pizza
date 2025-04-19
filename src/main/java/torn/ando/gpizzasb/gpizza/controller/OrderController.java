@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import torn.ando.gpizzasb.gpizza.entity.Order;
 import torn.ando.gpizzasb.gpizza.entity.OrderDish;
 import torn.ando.gpizzasb.gpizza.entity.OrderDishStatus;
-import torn.ando.gpizzasb.gpizza.entityRest.OrderDishRest;
+import torn.ando.gpizzasb.gpizza.entityRest.DishRest;
 import torn.ando.gpizzasb.gpizza.entityRest.OrderDishStatusRest;
 import torn.ando.gpizzasb.gpizza.entityRest.OrderRest;
 import torn.ando.gpizzasb.gpizza.mapper.RestMapper;
@@ -49,15 +49,15 @@ public class OrderController {
     }
 
     @PutMapping("{reference}/dishes")
-    public ResponseEntity<Order> updateOrder(@PathVariable String reference, @RequestBody List<OrderDishRest> orderDishRestList){
+    public ResponseEntity<Order> updateOrder(@PathVariable String reference, @RequestBody List<DishRest> dishRestList){
         Order order = orderService.findByReference(reference);
         if(order == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<OrderDish> orderDishList = orderDishRestList
+        List<OrderDish> orderDishList = dishRestList
                 .stream()
-                .map(orderDishRest -> {
-                    OrderDish orderDish = restMapper.mapToOrderDish(orderDishRest);
+                .map(dishRest -> {
+                    OrderDish orderDish = restMapper.mapToOrderDish(dishRest);
                     orderDish.setOrder(order);
                     return orderDish;
                 })

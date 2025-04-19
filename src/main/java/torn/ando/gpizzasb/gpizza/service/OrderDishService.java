@@ -10,13 +10,10 @@ import torn.ando.gpizzasb.gpizza.entity.Order;
 import torn.ando.gpizzasb.gpizza.entity.OrderDish;
 import torn.ando.gpizzasb.gpizza.entity.OrderDishStatus;
 import torn.ando.gpizzasb.gpizza.entity.OrderStatus;
-import torn.ando.gpizzasb.gpizza.entityRest.OrderDishRest;
 import torn.ando.gpizzasb.gpizza.enums.OrderStatusType;
-import torn.ando.gpizzasb.gpizza.mapper.RestMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service

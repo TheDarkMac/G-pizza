@@ -7,8 +7,11 @@ import torn.ando.gpizzasb.gpizza.dataSource.DataSource;
 import torn.ando.gpizzasb.gpizza.entity.Dish;
 import torn.ando.gpizzasb.gpizza.entity.DishIngredient;
 import org.springframework.stereotype.Repository;
+import torn.ando.gpizzasb.gpizza.enums.DurationUnit;
+import torn.ando.gpizzasb.gpizza.enums.StatisticType;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,5 +121,70 @@ public class DishDAO implements DAOSchema{
             dish.setDishIngredientList(dishIngredient);
         }
         return dish;
+    }
+
+    public double calculateProcessingTime(Long dishId, LocalDate startDate, LocalDate endDate,
+                                          DurationUnit timeUnit, StatisticType statType) {
+        
+        String statFunction;
+        switch (statType) {
+            case MINIMUM:
+                statFunction = "MIN";
+                break;
+            case MAXIMUM:
+                statFunction = "MAX";
+                break;
+            case AVERAGE:
+            default:
+                statFunction = "AVG";
+                break;
+        }
+        
+        String timeConversion;
+        switch (timeUnit) {
+            case MINUTES:
+                timeConversion = " / 60.0";
+                break;
+            case HOURS:
+                timeConversion = " / 3600.0";
+                break;
+            case SECONDS:
+            default:
+                timeConversion = "";
+                break;
+        }
+        
+        String processingTimeField =
+                statFunction + "(EXTRACT(EPOCH FROM preparation_duration)" + timeConversion + ") AS processing_time";
+
+        CriteriaSELECT criteriaSELECT = new CriteriaSELECT("dish_order_status");
+        criteriaSELECT.select(processingTimeField);
+        criteriaSELECT.and("dish_id");
+        criteriaSELECT.and("dish_status");
+
+        
+        LocalDate adjustedEndDate = endDate.plusDays(1);
+        criteriaSELECT.andBetween("datetime", startDate, adjustedEndDate);
+
+        String query = criteriaSELECT.build();
+        double result = 0.0;
+
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            int paramIndex = 1;
+            preparedStatement.setLong(paramIndex++, dishId);
+            preparedStatement.setString(paramIndex++, "DONE");
+            preparedStatement.setObject(paramIndex++, startDate);
+            preparedStatement.setObject(paramIndex, adjustedEndDate);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                result = resultSet.getDouble("processing_time");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error calculating processing time for dish " + dishId, e);
+        }
+
+        return result;
     }
 }
