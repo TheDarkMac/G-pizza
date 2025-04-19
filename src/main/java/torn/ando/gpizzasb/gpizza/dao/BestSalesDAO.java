@@ -87,8 +87,8 @@ public class BestSalesDAO {
                     bestSales2.setDishId(resultSet.getLong("id_dish"));
                     bestSales2.setReference(resultSet.getString("reference"));
                     bestSales2.setQuantity((int) resultSet.getDouble("quantity"));
-                    bestSales2.setFrom(resultSet.getDate("\"from\"").toLocalDate());
-                    bestSales2.setTo(resultSet.getDate("\"to\"").toLocalDate());
+                    bestSales2.setFrom(resultSet.getDate("from").toLocalDate());
+                    bestSales2.setTo(resultSet.getDate("to").toLocalDate());
                     bestSales2.setBenefice(resultSet.getDouble("benefice"));
                     bestSalesList.add(bestSales2);
                 }
