@@ -65,10 +65,10 @@ public class BestSalesDAO {
         List<BestSales> bestSalesList = new ArrayList<>();
         bestSales.forEach(bestSales1 -> {
             CriteriaINSERT criteriaINSERT = new CriteriaINSERT("best_sales");
-            criteriaINSERT.insert("reference","id_dish","quantity","from","to","benefice");
+            criteriaINSERT.insert("reference","id_dish","quantity","\"from\"","\"to\"","benefice");
             criteriaINSERT.values("?","?","?","?","?","?")
-                    .onConflict("reference","id_dish","from","to")
-                    .returning("reference","id_dish","quantity","from","to")
+                    .onConflict("reference","id_dish","\"from\"","\"to\"")
+                    .returning("reference","id_dish","quantity","\"from\"","\"to\"")
             ;
             String query = criteriaINSERT.build();
             System.out.println(query);
@@ -87,8 +87,8 @@ public class BestSalesDAO {
                     bestSales2.setDishId(resultSet.getLong("id_dish"));
                     bestSales2.setReference(resultSet.getString("reference"));
                     bestSales2.setQuantity((int) resultSet.getDouble("quantity"));
-                    bestSales2.setFrom(resultSet.getDate("from").toLocalDate());
-                    bestSales2.setTo(resultSet.getDate("to").toLocalDate());
+                    bestSales2.setFrom(resultSet.getDate("\"from\"").toLocalDate());
+                    bestSales2.setTo(resultSet.getDate("\"to\"").toLocalDate());
                     bestSales2.setBenefice(resultSet.getDouble("benefice"));
                     bestSalesList.add(bestSales2);
                 }
